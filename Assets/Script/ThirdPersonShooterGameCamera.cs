@@ -1,20 +1,9 @@
-// Camera code is from this Project:
-// http://unity3d.com/support/resources/example-projects/3rdpersonshooter
-// Thank you guys.
-
-// Add this script to the main camera.
-// In the inspector, there is a variable "player" - drag your player on it.
-// Press Play!
-
 using UnityEngine;
 using System.Collections;
 
-// 3rd person game-like camera controller
-// keeps camera behind the player and aimed at aiming point
 public class ThirdPersonShooterGameCamera : MonoBehaviour {
 	
 	public Transform player;
-	// public Texture crosshair; // crosshair - removed it for quick and easy setup. ben0bi
 	
 	protected Transform aimTarget; // that was public and a gameobject had to be dragged on it. - ben0bi
 	
