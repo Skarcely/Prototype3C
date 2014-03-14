@@ -18,6 +18,8 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		CheckValidation();
 	
 		if(isTranslatingX)
 		{
@@ -29,6 +31,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 	}
 	
 	public void Translate(GameObject target, int TranslateDirection ){
+		
 		
 		
 		if( TranslateDirection == 0) // Si Translate X
@@ -47,6 +50,20 @@ public class ReprogrammingStuff : MonoBehaviour {
 				
 			}
 			
+		}
+		
+	}
+	
+	public void CheckValidation()
+	{
+	
+		if(isTranslatingX){
+			if(Input.GetButton ("A_1"))
+			{
+				isTranslatingX = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
+			}
 		}
 		
 	}
