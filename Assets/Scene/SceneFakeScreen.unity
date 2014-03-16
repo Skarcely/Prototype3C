@@ -844,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1888846229}
-  smoothingTime: 10
+  smoothingTime: 20
   pivotOffset: {x: .200000003, y: .699999988, z: 0}
   camOffset: {x: 0, y: 1.89999998, z: -8.57999992}
   closeOffset: {x: .349999994, y: 1.70000005, z: 0}
@@ -958,6 +958,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f185792cbc3f454d9cbb18fd2ad3bf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 1766730673}
+  jumpSpeed: 20
   canMove: 0
 --- !u!4 &1888846229
 Transform:
@@ -966,7 +968,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1888846224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 113.804085, y: 4.83205605, z: 40.5057793}
+  m_LocalPosition: {x: 113.804085, y: 5.23997498, z: 40.5057793}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1779921823}

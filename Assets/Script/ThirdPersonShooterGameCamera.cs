@@ -57,11 +57,13 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 		}
 		
 		
-	/*	if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
+		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
 		{
-			aimTarget = (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform;
-		}*/
-		
+			cam.LookAt((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform);
+			
+		}
+		else
+		{
 			//La verticalité ne peut pas dépasser un min et un max
 			angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
 			
@@ -117,8 +119,7 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 			// Make the movement slightly smooth.
 			aimTarget.position = cam.position + cam.forward * aimTargetDist;
 		
-		Debug.DrawRay(cam.position, cam.forward, Color.magenta);
-		
+		}
 		
 	}
 	
