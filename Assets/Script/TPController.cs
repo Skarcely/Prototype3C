@@ -17,8 +17,7 @@ public class TPController : MonoBehaviour {
 	//Public
 	public Camera camera;
 	public float jumpSpeed;
-	
-	
+
 	[HideInInspector]
 	public bool canMove;
 
@@ -79,7 +78,8 @@ public class TPController : MonoBehaviour {
 		
 		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == false)
 		{
-			if(Input.GetButton("A_1"))
+			//Check jump input
+			if((Input.GetButton("A_1")) || (Input.GetKeyDown(KeyCode.Space)))
 			{
 				jumpIsPressed = true;
 				
@@ -93,11 +93,15 @@ public class TPController : MonoBehaviour {
 		jumpIsPressed = false;
 		isJumping = true;
 		
-		this.rigidbody.AddForce(Vector3.up * jumpSpeed*Time.deltaTime);	
-
+		this.rigidbody.AddForce(Vector3.up * jumpSpeed*Time.deltaTime*1000);	
 	}
-	
-	
+
+	void onTriggerEnter(Collider other)
+	{
+		if (other.gameObject.tag == "floor")
+		Debug.Log("ok");
+	}
+
 	
 	public void FreezeMovement()
 	{
