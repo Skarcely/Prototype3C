@@ -63,24 +63,20 @@ public class CrosshairLock : MonoBehaviour {
 	void OnGUI () 
 	{
 		// Affiche le crosshair de base
-		if(isLocking == false && showCadran == false)
+		if(isLocking == false )
 		{
-		
 			GUI.DrawTexture(new Rect(Screen.width/2 - (crosshairNormal.width/2), Screen.height/2 - (crosshairNormal.height/2), 32,32), crosshairNormal);
-			
 		}
 		
 		//Si passe sur un cube
 		if(isLocking == true && showCadran == false)
 		{
-			
 			GUI.DrawTexture(new Rect(Screen.width/2 - (crosshairLock.width/2), Screen.height/2 - (crosshairLock.height/2), 32,32), crosshairLock);	
 		}
 		
 		//Si Appuie sur LT
 		if(showCadran == true)
 		{
-			
 			GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 256,256), cadran);
 			
 			//Si le translate X est dispo
