@@ -32,6 +32,11 @@ public class CrosshairLock : MonoBehaviour {
 	
 	#endregion
 	
+	private RaycastHit hitTarget;
+	
+	[HideInInspector]
+	public GameObject targetToModify;
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -100,11 +105,11 @@ public class CrosshairLock : MonoBehaviour {
 	
 	void CheckRayHit()
 	{
-		RaycastHit hit;
 		
-		if(Physics.Raycast(rayCamToTarget, out hit) == true)
+		
+		if(Physics.Raycast(rayCamToTarget, out hitTarget) == true)
 		{
-			if(hit.transform.gameObject.tag == "Cube")
+			if(hitTarget.transform.gameObject.tag == "Cube")
 			{
 				isLocking = true;
 				//Debug.Log("Cube hitted");	
@@ -143,10 +148,16 @@ public class CrosshairLock : MonoBehaviour {
 						showCadran = false;
 						isModifying = true;						
 						translateXActivated = true;
+						
+						targetToModify = hitTarget.transform.gameObject;
+						// Debug.Log(targetToModify.tag);
+						
+						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
 
 					}
 				
 				}
+				// Pour l'instant juste un ELSE, mais après ajout d'autres fonctions, les tests devront etre complets
 				else
 				{
 					

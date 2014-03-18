@@ -9,21 +9,41 @@ public class TPController : MonoBehaviour {
 	private float v = 0.0f;
 	private Vector3 movementVector;
 	
+	private Vector3 cameraDirection;
+	private bool jumpIsPressed;
+	private bool isJumping;
+	
+	
+	//Public
+	public Camera camera;
+	public float jumpSpeed;
+
 	[HideInInspector]
 	public bool canMove;
-	
-	// Use this for initialization
+
 	void Start () {
 		InitializeVar();
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		CheckInputs();
-		//Debug.Log ("h =" + h);
-		//Debug.Log ("v =" + v);
 		
+		CheckInputs();
 		MovementBehaviour();
+	}
+	
+	void LateUpdate()
+	{
+		
+		cameraDirection = camera.transform.forward;
+		cameraDirection.y=0;
+		
+		if(cameraDirection.sqrMagnitude != 0.0f)
+		{
+			
+			cameraDirection.Normalize();
+			this.transform.LookAt(this.transform.position + cameraDirection);
+				
+		}
 		
 	}
 	
@@ -31,15 +51,20 @@ public class TPController : MonoBehaviour {
 	{
 		speed = 5.0f;
 		canMove = true;
+		isJumping = false;
 	}
 	
 	void MovementBehaviour()
 	{	
-		//Debug.Log (directionVector);
-		
 		if(canMove == true)
-		{
+		{	
+			if( jumpIsPressed == true && isJumping == false )
+			{
+				Jump();	
+			}
+			
 			this.transform.Translate(movementVector*Time.deltaTime*speed);
+	
 		}
 	}
 	
@@ -49,12 +74,38 @@ public class TPController : MonoBehaviour {
 		v = Input.GetAxis("L_YAxis_1");
 		
 		movementVector = new Vector3(h, 0, v);
+		
+		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == false)
+		{
+			//Check jump input
+			if(Input.GetButtonDown("A_1"))
+			{
+				jumpIsPressed = true;
+				
+			}
+		}
 	
 	}
 	
+	void Jump()
+	{
+		jumpIsPressed = false;
+		isJumping = true;
+		this.rigidbody.AddForce(Vector3.up * jumpSpeed*Time.deltaTime*1000);	
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		if (collision.gameObject.tag == "floor")
+		{
+			isJumping = false;	
+		}
+		
+	}
+
+	
 	public void FreezeMovement()
 	{
-		//Debug.Log("FreezeMovement");
 		canMove = false;	
 	}
 	

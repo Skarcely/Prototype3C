@@ -54,7 +54,16 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 										
 			//Définition de la verticalité entre -1 et 1
 			angleV += Mathf.Clamp(Input.GetAxis("R_YAxis_1")  , -1, 1) * verticalAimingSpeed * Time.deltaTime;
+		}
+		
+		
+		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
+		{
+			cam.LookAt((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform);
 			
+		}
+		else
+		{
 			//La verticalité ne peut pas dépasser un min et un max
 			angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
 			
@@ -109,6 +118,7 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 			// Set the aimTarget position according to the distance we found.
 			// Make the movement slightly smooth.
 			aimTarget.position = cam.position + cam.forward * aimTargetDist;
+		
 		}
 		
 	}
