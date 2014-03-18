@@ -150,7 +150,7 @@ public class CrosshairLock : MonoBehaviour {
 	void CheckInputs()
 	{
 		
-		// Si on vise un cube et qu'on n'est pas déjà en train de modifier un objet
+		// Si on vise un cube
 		if(isLocking == true )
 		{
 			
@@ -217,13 +217,20 @@ public class CrosshairLock : MonoBehaviour {
 					
  				
 			}
+			else if( isModifying == true)
+			{
+				showCadran = false;
+				
+				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = false;
+			}
 			else
 			{
 				
 				showCadran = false;
 				
 				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = true;
-				
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = true;
 			}
 			
 		}
