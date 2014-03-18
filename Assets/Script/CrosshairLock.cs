@@ -9,7 +9,9 @@ public class CrosshairLock : MonoBehaviour {
 	public Texture2D crosshairLock;
 	public Texture2D cadran;
 	public Texture2D cadran_TranslateX_Normal;
-	public Texture2D cadran_Translatex_Selected;
+	public Texture2D cadran_TranslateX_Selected;
+	public Texture2D cadran_TranslateY_Normal;
+	public Texture2D cadran_TranslateY_Selected;
 	
 	//Private
 	private int xRayTarget;
@@ -29,6 +31,10 @@ public class CrosshairLock : MonoBehaviour {
 	//TranslateX
 	private bool translateXAvailable;
 	private bool translateXActivated;
+	
+	//TranslateY
+	private bool translateYAvailable;
+	private bool translateYActivated;
 	
 	#endregion
 	
@@ -79,6 +85,7 @@ public class CrosshairLock : MonoBehaviour {
 		{
 			GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 256,256), cadran);
 			
+			#region Translate X
 			//Si le translate X est dispo
 			if(translateXAvailable == true)
 			{
@@ -91,9 +98,29 @@ public class CrosshairLock : MonoBehaviour {
 			if(translateXActivated == true)
 			{
 			
-				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_Translatex_Selected);
+				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateX_Selected);
 				
 			}
+			#endregion
+			
+			/*#region TranslateY
+			
+			if(translateYAvailable == true)
+			{
+				
+				GUI.DrawTexture(new Rect(Screen.width/2 + (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Normal);
+				
+			}
+			if(translateYActivated == true)
+			{
+			
+				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Selected);
+				
+			}
+			
+			
+			#endregion*/
+			
 		}
 		
 		
@@ -121,7 +148,7 @@ public class CrosshairLock : MonoBehaviour {
 	{
 		
 		// Si on vise un cube et qu'on n'est pas déjà en train de modifier un objet
-		if(isLocking == true &&!isModifying)
+		if(isLocking == true )
 		{
 			
 			if( Input.GetAxis("TriggersL_1") >= 0.9)
@@ -130,6 +157,7 @@ public class CrosshairLock : MonoBehaviour {
 				showCadran = true;
 				
 				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = false;
 				
 				
 				//Si le joystick droit est entre 0 et -x et 0 et -y 
@@ -143,7 +171,7 @@ public class CrosshairLock : MonoBehaviour {
 						
 						showCadran = false;
 						isModifying = true;						
-						translateXActivated = true;
+						//translateXActivated = true;
 						
 						targetToModify = hitTarget.transform.gameObject;
 						// Debug.Log(targetToModify.tag);
@@ -153,6 +181,28 @@ public class CrosshairLock : MonoBehaviour {
 					}
 				
 				}
+			/*	else if ( ((Input.GetAxis ("R_XAxis_1") >= 0.1 && Input.GetAxis ("R_XAxis_1") >= 0.1 )) && translateYAvailable)
+				{
+					translateYActivated = true;
+					
+					//Si le joueur sélectionn translate Y
+					if(Input.GetButton("RB_1"))
+					{
+						
+						showCadran = false;
+						isModifying = true;						
+						//translateXActivated = true;
+						
+						targetToModify = hitTarget.transform.gameObject;
+						// Debug.Log(targetToModify.tag);
+						
+						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
+
+					}
+					
+					
+				}*/
+				
 				// Pour l'instant juste un ELSE, mais après ajout d'autres fonctions, les tests devront etre complets
 				else
 				{
@@ -195,6 +245,7 @@ public class CrosshairLock : MonoBehaviour {
 		isLocking = false;
 		showCadran = false;
 		translateXAvailable = true;
+		translateYAvailable = true;
 			
 	}
 	

@@ -8,6 +8,8 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 	[HideInInspector]
 	public bool isTranslatingX;
+	[HideInInspector]
+	public bool isTranslatingY;
 	
 	private Vector3 translateVector;
 	
@@ -25,6 +27,12 @@ public class ReprogrammingStuff : MonoBehaviour {
 		{
 			
 			Translate ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify, 0);
+			
+		}
+		if(isTranslatingY)
+		{
+				
+			Translate ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify, 1);
 			
 		}
 		
