@@ -62,7 +62,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 		
 	}
 	
-	public void CheckValidation()
+	private void CheckValidation()
 	{
 	
 		if(isTranslatingX){
@@ -72,8 +72,23 @@ public class ReprogrammingStuff : MonoBehaviour {
 				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
 			}
+			
+			if(Input.GetButton ("B_1"))
+			{
+				ResetTarget();
+			}
+			
 		}
 		
+	}
+	
+	private void ResetTarget()
+	{
+		
+		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position = (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetStorePosition;
+		isTranslatingX = false;
+		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
+		(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
 	}
 	
 }
