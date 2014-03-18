@@ -880,6 +880,7 @@ MonoBehaviour:
   isLocking: 0
   isModifying: 0
   targetToModify: {fileID: 0}
+  targetStorePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1779921822
 GameObject:
   m_ObjectHideFlags: 0

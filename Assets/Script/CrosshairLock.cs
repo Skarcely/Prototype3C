@@ -43,6 +43,9 @@ public class CrosshairLock : MonoBehaviour {
 	[HideInInspector]
 	public GameObject targetToModify;
 	
+	[HideInInspector]
+	public Vector3 targetStorePosition;
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -174,6 +177,7 @@ public class CrosshairLock : MonoBehaviour {
 						//translateXActivated = true;
 						
 						targetToModify = hitTarget.transform.gameObject;
+						targetStorePosition = targetToModify.transform.position;
 						// Debug.Log(targetToModify.tag);
 						
 						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
