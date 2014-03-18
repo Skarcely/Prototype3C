@@ -29,7 +29,6 @@ public class TPController : MonoBehaviour {
 		
 		CheckInputs();
 		MovementBehaviour();
-		
 	}
 	
 	void LateUpdate()
@@ -62,6 +61,7 @@ public class TPController : MonoBehaviour {
 			if( jumpIsPressed == true && isJumping == false )
 			{
 				Jump();	
+				Debug.Log("ok");
 			}
 			
 			this.transform.Translate(movementVector*Time.deltaTime*speed);
@@ -79,7 +79,7 @@ public class TPController : MonoBehaviour {
 		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == false)
 		{
 			//Check jump input
-			if((Input.GetButton("A_1")) || (Input.GetKeyDown(KeyCode.Space)))
+			if(Input.GetButtonDown("A_1"))
 			{
 				jumpIsPressed = true;
 				
@@ -92,14 +92,16 @@ public class TPController : MonoBehaviour {
 	{
 		jumpIsPressed = false;
 		isJumping = true;
-		
 		this.rigidbody.AddForce(Vector3.up * jumpSpeed*Time.deltaTime*1000);	
 	}
 
-	void onTriggerEnter(Collider other)
+	void OnCollisionEnter(Collision collision)
 	{
-		if (other.gameObject.tag == "floor")
-		Debug.Log("ok");
+		if (collision.gameObject.tag == "floor")
+		{
+			isJumping = false;	
+		}
+		
 	}
 
 	
