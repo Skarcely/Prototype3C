@@ -61,7 +61,6 @@ public class TPController : MonoBehaviour {
 			if( jumpIsPressed == true && isJumping == false )
 			{
 				Jump();	
-				Debug.Log("ok");
 			}
 			
 			this.transform.Translate(movementVector*Time.deltaTime*speed);
