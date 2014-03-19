@@ -62,6 +62,7 @@ public class CrosshairLock : MonoBehaviour {
 		
 		//Debug
 		//Debug.DrawRay(rayCam.origin, rayCam.direction, Color.magenta);
+		Debug.Log("X : " + (Input.GetAxis("R_XAxis_1") + " ; Y = " + (Input.GetAxis("R_YAxis_1"))));
 		
 		CheckRayHit();
 		
@@ -106,18 +107,18 @@ public class CrosshairLock : MonoBehaviour {
 			}
 			#endregion
 			
-			/*#region TranslateY
+			#region TranslateY
 			
 			if(translateYAvailable == true)
 			{
 				
-				GUI.DrawTexture(new Rect(Screen.width/2 + (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Normal);
+				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Normal);
 				
 			}
 			if(translateYActivated == true)
 			{
 			
-				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Selected);
+				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Selected);
 				
 			}
 			
@@ -164,8 +165,9 @@ public class CrosshairLock : MonoBehaviour {
 				
 				
 				//Si le joystick droit est entre 0 et -x et 0 et -y 
-				if(((Input.GetAxis("R_XAxis_1") <= -0.1 && Input.GetAxis("R_YAxis_1") >= -0.9) || (Input.GetAxis("R_XAxis_1") >= -0.9 && Input.GetAxis("R_YAxis_1") <= -0.1)) && translateXAvailable){
+				if( translateXAvailable && ((Input.GetAxis("R_XAxis_1") <= -0.1) && (Input.GetAxis("R_YAxis_1") <= -0.1)) ){
 				
+					Debug.Log ("Passe ici !");
 					translateXActivated = true;
 					
 					//Si le joueur sélectionn translate X
@@ -185,7 +187,7 @@ public class CrosshairLock : MonoBehaviour {
 					}
 				
 				}
-			/*	else if ( ((Input.GetAxis ("R_XAxis_1") >= 0.1 && Input.GetAxis ("R_XAxis_1") >= 0.1 )) && translateYAvailable)
+				else if( ((Input.GetAxis ("R_XAxis_1") >= 0.1 && Input.GetAxis ("R_XAxis_1") >= -0.1 )) && translateYAvailable)
 				{
 					translateYActivated = true;
 					
@@ -205,13 +207,14 @@ public class CrosshairLock : MonoBehaviour {
 					}
 					
 					
-				}*/
+				}
 				
 				// Pour l'instant juste un ELSE, mais après ajout d'autres fonctions, les tests devront etre complets
 				else
 				{
 					
 					translateXActivated = false;
+					translateYActivated = false;
 					
 				}
 					
@@ -256,6 +259,7 @@ public class CrosshairLock : MonoBehaviour {
 		isLocking = false;
 		showCadran = false;
 		translateXAvailable = true;
+		translateXActivated = false;
 		translateYAvailable = true;
 			
 	}
