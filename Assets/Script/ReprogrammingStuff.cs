@@ -25,13 +25,11 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 		if(isTranslatingX)
 		{
-			
 			Translate ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify, 0);
 			
 		}
 		if(isTranslatingY)
 		{
-				
 			Translate ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify, 1);
 			
 		}
@@ -44,7 +42,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 		
 		if( TranslateDirection == 0) // Si Translate X
 		{	
-		
+			isTranslatingY = false;
 			if(Input.GetAxis("L_XAxis_1") >= 0.1)
 			{
 				translateVector = new Vector3(translateStep, 0,0);
@@ -60,15 +58,33 @@ public class ReprogrammingStuff : MonoBehaviour {
 			
 		}
 		
+		if (TranslateDirection == 1)
+		{
+			isTranslatingX = false;
+			if(Input.GetAxis("L_YAxis_1") >= 0.1)
+			{
+				translateVector = new Vector3(0, translateStep,0);
+				target.transform.Translate(translateVector*Time.deltaTime*translateSpeed);
+			}
+			else if(Input.GetAxis ("L_XAxis_1")<= -0.1)
+			{
+			
+				translateVector = new Vector3(0, -translateStep,0);
+				target.transform.Translate(translateVector*Time.deltaTime*translateSpeed);
+				
+			}
+			
+		}
+		
 	}
 	
 	private void CheckValidation()
 	{
-	
-		if(isTranslatingX){
+		if(isTranslatingX || isTranslatingY){
 			if(Input.GetButton ("A_1"))
 			{
 				isTranslatingX = false;
+				isTranslatingY = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
 			}
