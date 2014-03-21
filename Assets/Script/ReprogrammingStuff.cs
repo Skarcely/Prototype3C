@@ -66,7 +66,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 				translateVector = new Vector3(0, translateStep,0);
 				target.transform.Translate(translateVector*Time.deltaTime*translateSpeed);
 			}
-			else if(Input.GetAxis ("L_XAxis_1")<= -0.1)
+			else if(Input.GetAxis ("L_YAxis_1") <= -0.1)
 			{
 			
 				translateVector = new Vector3(0, -translateStep,0);
@@ -86,6 +86,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 				isTranslatingX = false;
 				isTranslatingY = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
 			}
 			

@@ -22,7 +22,8 @@ public class CrosshairLock : MonoBehaviour {
 	[HideInInspector]
 	public bool isLocking;
 	
-	private bool showCadran;
+	[HideInInspector]
+	public bool showCadran;
 	
 	[HideInInspector]
 	public bool isModifying;
@@ -61,8 +62,8 @@ public class CrosshairLock : MonoBehaviour {
 		rayCamToTarget = camera.ScreenPointToRay(new Vector3(xRayTarget,yRayTarget));
 		
 		//Debug
-		//Debug.DrawRay(rayCam.origin, rayCam.direction, Color.magenta);
-		Debug.Log("X : " + (Input.GetAxis("R_XAxis_1") + " ; Y = " + (Input.GetAxis("R_YAxis_1"))));
+		//Debug.DrawRay(rayCamToTarget.origin, rayCamToTarget.direction, Color.magenta, 5000000.00f);
+		//Debug.Log("X : " + (Input.GetAxis("R_XAxis_1") + " ; Y = " + (Input.GetAxis("R_YAxis_1"))));
 		
 		CheckRayHit();
 		
@@ -157,7 +158,7 @@ public class CrosshairLock : MonoBehaviour {
 			
 			if( Input.GetAxis("TriggersL_1") >= 0.9)
 			{
-
+								
 				showCadran = true;
 				
 				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
@@ -167,7 +168,7 @@ public class CrosshairLock : MonoBehaviour {
 				//Si le joystick droit est entre 0 et -x et 0 et -y 
 				if( translateXAvailable && ((Input.GetAxis("R_XAxis_1") <= -0.1) && (Input.GetAxis("R_YAxis_1") <= -0.1)) ){
 				
-					Debug.Log ("Passe ici !");
+					//Juste visuel 
 					translateXActivated = true;
 					
 					//Si le joueur sélectionn translate X
@@ -191,16 +192,15 @@ public class CrosshairLock : MonoBehaviour {
 				{
 					translateYActivated = true;
 					
-					//Si le joueur sélectionn translate Y
+					//Si le joueur sélectionne translate Y
 					if(Input.GetButton("RB_1"))
 					{
 						
 						showCadran = false;
 						isModifying = true;						
-						//translateXActivated = true;
 						
 						targetToModify = hitTarget.transform.gameObject;
-						// Debug.Log(targetToModify.tag);
+						targetStorePosition = targetToModify.transform.position;
 						
 						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
 

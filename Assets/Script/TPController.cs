@@ -12,6 +12,7 @@ public class TPController : MonoBehaviour {
 	private Vector3 cameraDirection;
 	private bool jumpIsPressed;
 	private bool isJumping;
+	private bool isMoving;
 	
 	
 	//Public
@@ -36,15 +37,18 @@ public class TPController : MonoBehaviour {
 	void LateUpdate()
 	{
 		
-		cameraDirection = camera.transform.forward;
-		cameraDirection.y=0;
-		
-		if(cameraDirection.sqrMagnitude != 0.0f)
+		if(isMoving || (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).showCadran == true)
 		{
+			cameraDirection = camera.transform.forward;
+			cameraDirection.y=0;
 			
-			cameraDirection.Normalize();
-			this.transform.LookAt(this.transform.position + cameraDirection);
+			if(cameraDirection.sqrMagnitude != 0.0f)
+			{
 				
+				cameraDirection.Normalize();
+				this.transform.LookAt(this.transform.position + cameraDirection);
+					
+			}
 		}
 		
 	}
@@ -54,6 +58,7 @@ public class TPController : MonoBehaviour {
 		speed = 5.0f;
 		canMove = true;
 		isJumping = false;
+		isMoving = false;
 	}
 	
 	void MovementBehaviour()
@@ -76,6 +81,16 @@ public class TPController : MonoBehaviour {
 		v = Input.GetAxis("L_YAxis_1");
 		
 		movementVector = new Vector3(h, 0, v);
+		
+		if( h!=0 || v != 0)
+		{
+			isMoving = true;
+		}
+		else
+		{
+			
+			isMoving = false;
+		}
 		
 		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == false)
 		{
@@ -101,6 +116,7 @@ public class TPController : MonoBehaviour {
 	
 	public void FreezeMovement()
 	{
+		
 		canMove = false;	
 	}
 	
