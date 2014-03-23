@@ -29,24 +29,22 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 	[HideInInspector]
 	public bool playerCanRotate;
 	
+	[HideInInspector]
+	public bool playerIsRotatingCamera;
+	
 	// Use this for initialization
 	void Start () 
 	{
-		
-		VarInitialize();
-		
-		
+		VarInitialize();	
 	}
 	
 	// Update is called once per frame
 	void LateUpdate () {
-			
-		
-		
 		
 		if (Time.deltaTime == 0 || Time.timeScale == 0 || player == null) 
 			return;
 		
+		// Si le joueur peut diriger la caméra
 		if( playerCanRotate == true)	
 		{
 			//Définition de l'horizontalité entre -1 et 1
@@ -54,17 +52,28 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 										
 			//Définition de la verticalité entre -1 et 1
 			angleV += Mathf.Clamp(Input.GetAxis("R_YAxis_1")  , -1, 1) * verticalAimingSpeed * Time.deltaTime;
+			
+			if (Input.GetAxis("R_XAxis_1") !=0 || Input.GetAxis("R_YAxis_1") != 0 )
+			{
+				playerIsRotatingCamera = true;				
+			}
+			else
+			{
+				playerIsRotatingCamera = false;	
+			}
+			
 		}
 		
-		
+		//Si on est en train de modifier un objet : l'Objet devient la target de la caméra
 		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
 		{
 			cam.LookAt((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform);
 			
 		}
+		// Sinon, on calcule la position de la cam
 		else
 		{
-			//La verticalité ne peut pas dépasser un min et un max
+			//Y ne peut pas dépasser un min et un max définis dans l'inspector
 			angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
 			
 			// Before changing camera, store the prev aiming distance.
@@ -74,50 +83,48 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 			// Set aim rotation
 			Quaternion aimRotation = Quaternion.Euler(-angleV, angleH, 0);
 			Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
+			
 			cam.rotation = aimRotation;
 			
-			#region Récupère la position du joueur et détermine la position de la caméra en smoothant les transitions
+			#region Récupère la position du joueur et détermine la position de la caméra
 			// Find far and close position for the camera
-			smoothPlayerPos = Vector3.Lerp(smoothPlayerPos, player.position, smoothingTime * Time.deltaTime);
+			smoothPlayerPos = Vector3.Lerp(player.position, player.position, smoothingTime * Time.deltaTime);
 			smoothPlayerPos.x = player.position.x;
 			smoothPlayerPos.z = player.position.z;
 			
 			Vector3 farCamPoint = smoothPlayerPos + camYRotation * pivotOffset + aimRotation * camOffset;
 			Vector3 closeCamPoint = player.position + camYRotation * closeOffset;
 			
+			//Distance entre far et close. 
+			//Distance = (Vecteur1-Vecteur2).magnitude
 			float farDist = Vector3.Distance(farCamPoint, closeCamPoint);
 			
+			
 			// Smoothly increase maxCamDist up to the distance of farDist
-			maxCamDist = Mathf.Lerp(maxCamDist, farDist, 5 * Time.deltaTime);
+			maxCamDist = Mathf.Lerp(maxCamDist, farDist, 50 * Time.deltaTime);
+			
+			//Debug.Log("farDist = " +farDist);
+			//Debug.Log ("maxCamDist = " + maxCamDist);
+			//Debug.Log (50*Time.deltaTime);
 			
 			#endregion
 			
 			
 			// Make sure camera doesn't intersect geometry
 			// Move camera towards closeOffset if ray back towards camera position intersects something 
-			RaycastHit hit;
+			//RaycastHit hit;
+			
 			Vector3 closeToFarDir = (farCamPoint - closeCamPoint) / farDist;
 			
-			float padding = 0.3f;
-			if (Physics.Raycast(closeCamPoint, closeToFarDir, out hit, maxCamDist + padding, mask)) {
-				maxCamDist = hit.distance - padding;
-			}
 			cam.position = closeCamPoint + closeToFarDir * maxCamDist;
 			
-			// Do a raycast from the camera to find the distance to the point we're aiming at.
-			float aimTargetDist;
-				
-			if (Physics.Raycast(cam.position, cam.forward, out hit, 100, mask)) {
-				aimTargetDist = hit.distance + 0.05f;
-			}
-			else {
-				// If we're aiming at nothing, keep prev dist but make it at least 5.
-				aimTargetDist = Mathf.Max(5, prevDist);
-			}
 			
+			float aimTargetDist;
+			aimTargetDist = Mathf.Max(5, prevDist);
+
 			// Set the aimTarget position according to the distance we found.
 			// Make the movement slightly smooth.
-			aimTarget.position = cam.position + cam.forward * aimTargetDist;
+			aimTarget.position = (cam.position + cam.forward * aimTargetDist);
 		
 		}
 		

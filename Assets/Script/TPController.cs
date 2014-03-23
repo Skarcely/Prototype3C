@@ -10,19 +10,16 @@ public class TPController : MonoBehaviour {
 	private Vector3 movementVector;
 	
 	private Vector3 cameraDirection;
-	private bool jumpIsPressed;
-	private bool isJumping;
-	private bool isMoving;
-	
+	private bool isMoving;	
 	
 	//Public
 	public Camera camera;
 	public float jumpSpeed;
 	
-	
 	[HideInInspector]
 	public bool canMove;
-
+	
+	#region Methods
 	void Start () {
 		InitializeVar();
 	}
@@ -36,18 +33,17 @@ public class TPController : MonoBehaviour {
 	
 	void LateUpdate()
 	{
-		
-		if(isMoving || (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).showCadran == true)
+		// Si le personnage est en mouvement 
+		// Ou que le cadran est ouvert, le personnage regarde dans la direction de la caméra
+		if( isMoving || (isMoving && (GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerIsRotatingCamera == true) || (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).showCadran == true)
 		{
 			cameraDirection = camera.transform.forward;
 			cameraDirection.y=0;
 			
 			if(cameraDirection.sqrMagnitude != 0.0f)
 			{
-				
 				cameraDirection.Normalize();
 				this.transform.LookAt(this.transform.position + cameraDirection);
-					
 			}
 		}
 		
@@ -57,21 +53,15 @@ public class TPController : MonoBehaviour {
 	{
 		speed = 5.0f;
 		canMove = true;
-		isJumping = false;
 		isMoving = false;
 	}
 	
 	void MovementBehaviour()
 	{	
+		
 		if(canMove == true)
 		{	
-			if( jumpIsPressed == true && isJumping == false )
-			{
-				Jump();	
-			}
-			
 			this.transform.Translate(movementVector*Time.deltaTime*speed);
-	
 		}
 	}
 	
@@ -92,26 +82,8 @@ public class TPController : MonoBehaviour {
 			isMoving = false;
 		}
 		
-		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == false)
-		{
-			if(Input.GetButton("A_1"))
-			{
-				jumpIsPressed = true;
-				
-			}
-		}
 	
 	}
-	
-	void Jump()
-	{
-		jumpIsPressed = false;
-		isJumping = true;
-		
-		this.rigidbody.AddForce(Vector3.up * jumpSpeed*Time.deltaTime);	
-
-	}
-	
 	
 	
 	public void FreezeMovement()
@@ -124,5 +96,7 @@ public class TPController : MonoBehaviour {
 	{
 		canMove = true;	
 	}
+	
+	#endregion
 	
 }

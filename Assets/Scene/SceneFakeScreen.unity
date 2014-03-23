@@ -845,16 +845,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1888846229}
-  smoothingTime: 20
+  smoothingTime: .100000001
   pivotOffset: {x: .200000003, y: .699999988, z: 0}
   camOffset: {x: 0, y: 1.89999998, z: -8.57999992}
   closeOffset: {x: .349999994, y: 1.70000005, z: 0}
   horizontalAimingSpeed: 200
   verticalAimingSpeed: 200
   maxVerticalAngle: 30
-  minVerticalAngle: -80
+  minVerticalAngle: -70
   mouseSensitivity: .300000012
   playerCanRotate: 0
+  playerIsRotatingCamera: 0
 --- !u!114 &1766730675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,6 +879,7 @@ MonoBehaviour:
   cadran_TranslateY_Selected: {fileID: 2800000, guid: b49ee0e5218406f409d6dccecd4b8215,
     type: 3}
   isLocking: 0
+  showCadran: 0
   isModifying: 0
   targetToModify: {fileID: 0}
   targetStorePosition: {x: 0, y: 0, z: 0}
