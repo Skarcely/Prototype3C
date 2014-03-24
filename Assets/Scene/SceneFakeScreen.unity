@@ -479,7 +479,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5c251473764ac6b4493320d3ac5c59b1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -.707106829
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5c251473764ac6b4493320d3ac5c59b1, type: 3}
       propertyPath: m_LocalRotation.z
@@ -487,7 +487,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5c251473764ac6b4493320d3ac5c59b1, type: 3}
       propertyPath: m_LocalRotation.w
-      value: .707106829
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5c251473764ac6b4493320d3ac5c59b1, type: 3}
       propertyPath: m_LocalScale.x
@@ -540,7 +540,7 @@ Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 5c251473764ac6b4493320d3ac5c59b1, type: 3}
   m_PrefabInternal: {fileID: 1149254268}
   m_GameObject: {fileID: 1375822538}
-  m_LocalRotation: {x: 0, y: -.707106829, z: 0, w: .707106829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -.00575256348, y: -.976908445, z: .100036621}
   m_LocalScale: {x: .0813563541, y: .0813563541, z: .0813563541}
   m_Children:
@@ -883,32 +883,6 @@ MonoBehaviour:
   isModifying: 0
   targetToModify: {fileID: 0}
   targetStorePosition: {x: 0, y: 0, z: 0}
---- !u!1 &1779921822
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1779921823}
-  m_Layer: 0
-  m_Name: Pivot
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1779921823
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1779921822}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1888846229}
 --- !u!1 &1888846224
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,7 +953,6 @@ Transform:
   m_LocalPosition: {x: 113.804085, y: 5.23997498, z: 40.5057793}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1779921823}
   - {fileID: 1375822539}
   m_Father: {fileID: 0}
 --- !u!1 &2045770996
