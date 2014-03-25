@@ -118,6 +118,7 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 			// Set the aimTarget position according to the distance we found.
 			// Make the movement slightly smooth.
 			aimTarget.position = (cam.position + cam.forward * aimTargetDist);
+			Debug.DrawRay(aimTarget.position, Vector3.up, Color.yellow);
 		
 		}
 		

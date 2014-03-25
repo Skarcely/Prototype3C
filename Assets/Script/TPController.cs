@@ -28,17 +28,23 @@ public class TPController : MonoBehaviour {
 		
 		CheckInputs();
 		MovementBehaviour();
-		
+		Debug.Log(movementVector);
+		Debug.Log(this.transform.forward);
 	}
 	
 	void LateUpdate()
 	{
+		
+		
+		
+		this.transform.forward = movementVector;
+		
 		// Si le personnage est en mouvement ou qu'il bouge et que le joueur dirige la caméra
 		// Ou que le cadran est ouvert, le personnage regarde dans la direction de la caméra
-		if( isMoving ||
+		/*if( isMoving ||
 			(isMoving && (GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerIsRotatingCamera == true) ||
 			(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).showCadran == true || 
-			(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true )
+			(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock"))  as CrosshairLock).isModifying == true )
 		{
 			cameraDirection = camera.transform.forward;
 			cameraDirection.y=0;
@@ -47,9 +53,10 @@ public class TPController : MonoBehaviour {
 			{
 				cameraDirection.Normalize();
 				this.transform.LookAt(this.transform.position + cameraDirection);
-				this.transform.GetChild(0).transform.forward = camera.transform.forward;
+				
+				this.transform.GetChild(0).transform.forward = cameraDirection;
 			}
-		}
+		}*/
 		
 		
 	}
@@ -66,7 +73,11 @@ public class TPController : MonoBehaviour {
 		
 		if(canMove == true)
 		{	
-			this.transform.Translate(movementVector*Time.deltaTime*speed);
+			if(movementVector != Vector3.zero)
+			{
+//				this.transform.Translate(movementVector*Time.deltaTime*speed);
+				this.transform.Translate(this.transform.forward*Time.deltaTime*speed);
+			}	
 		}
 	}
 	
