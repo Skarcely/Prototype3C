@@ -40,7 +40,7 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		
+				
 		if (Time.deltaTime == 0 || Time.timeScale == 0 || player == null) 
 			return;
 		
@@ -103,17 +103,10 @@ public class ThirdPersonShooterGameCamera : MonoBehaviour {
 			// Smoothly increase maxCamDist up to the distance of farDist
 			maxCamDist = Mathf.Lerp(maxCamDist, farDist, 50 * Time.deltaTime);
 			
-			//Debug.Log("farDist = " +farDist);
-			//Debug.Log ("maxCamDist = " + maxCamDist);
-			//Debug.Log (50*Time.deltaTime);
 			
 			#endregion
 			
-			
-			// Make sure camera doesn't intersect geometry
-			// Move camera towards closeOffset if ray back towards camera position intersects something 
-			//RaycastHit hit;
-			
+						
 			Vector3 closeToFarDir = (farCamPoint - closeCamPoint) / farDist;
 			
 			cam.position = closeCamPoint + closeToFarDir * maxCamDist;
