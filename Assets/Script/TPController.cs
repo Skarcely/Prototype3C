@@ -33,9 +33,12 @@ public class TPController : MonoBehaviour {
 	
 	void LateUpdate()
 	{
-		// Si le personnage est en mouvement 
+		// Si le personnage est en mouvement ou qu'il bouge et que le joueur dirige la caméra
 		// Ou que le cadran est ouvert, le personnage regarde dans la direction de la caméra
-		if( isMoving || (isMoving && (GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerIsRotatingCamera == true) || (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).showCadran == true)
+		if( isMoving ||
+			(isMoving && (GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerIsRotatingCamera == true) ||
+			(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).showCadran == true || 
+			(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true )
 		{
 			cameraDirection = camera.transform.forward;
 			cameraDirection.y=0;
@@ -44,8 +47,10 @@ public class TPController : MonoBehaviour {
 			{
 				cameraDirection.Normalize();
 				this.transform.LookAt(this.transform.position + cameraDirection);
+				this.transform.GetChild(0).transform.forward = camera.transform.forward;
 			}
 		}
+		
 		
 	}
 	
