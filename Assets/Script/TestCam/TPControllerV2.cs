@@ -3,12 +3,23 @@ using System.Collections;
 
 public class TPControllerV2 : MonoBehaviour {
 	
+	
+	//Private
 	private float XControllerAxis;
 	private float YControllerAxis;
-	private Vector3 movementVector;
-	private Vector3 previousAngle;
+	private Vector3 stickDirection;
+	private Vector3 movementDirection;
 	
+	private Vector3 previousAngle;
+	private Vector3 cameraForward;
+	private Vector3 cameraRight;
+	
+	//Public
 	public float movementSpeed;
+	public float smoothRotation;
+	
+	public Transform refCam;
+	public Transform playerGraphics;
 	
 	// Use this for initialization
 	void Start () {
@@ -21,15 +32,48 @@ public class TPControllerV2 : MonoBehaviour {
 		
 		//Debug
 		Debug.DrawRay(this.transform.position, this.transform.forward, Color.magenta);
+		
 	}
 	
 	void LateUpdate()
 	{
-		if(movementVector != Vector3.zero)
+			
+		if(stickDirection != Vector3.zero)
 		{
-			this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, Mathf.Atan2(XControllerAxis, YControllerAxis) * Mathf.Rad2Deg, this.transform.eulerAngles.z);
-			this.transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed);
+			
+//			Fonctionnel mais mouvements perso pas en ref à la cam
+			
+			//Rotate le player en fonction de l'input stick
+//			this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, Mathf.Atan2(XControllerAxis, YControllerAxis) * Mathf.Rad2Deg, this.transform.eulerAngles.z);
+//			
+//			this.transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed);
 			previousAngle = this.transform.eulerAngles;
+			//Fonctionnel
+			
+			
+			//Test 1
+	
+			//Get Forward and Right from Camera
+			Vector3 modifiedDirForward = refCam.TransformDirection(Vector3.forward);
+			modifiedDirForward.y = 0.0f;
+			modifiedDirForward = modifiedDirForward.normalized;
+			
+			Vector3 modifiedDirRight = refCam.right;
+			
+			// Setting  x aand z to translate
+			Vector3 xTranslate = modifiedDirRight * XControllerAxis * movementSpeed;
+			Vector3 zTranslate = modifiedDirForward * YControllerAxis * movementSpeed;
+			
+			//Creating the movement vector
+			Vector3 composedTranslate = Vector3.Lerp(xTranslate, zTranslate, 0.5f);
+			
+			Debug.DrawRay(this.transform.position, composedTranslate, Color.red);
+			
+			this.transform.Translate(composedTranslate*Time.deltaTime*movementSpeed);
+			
+			Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
+			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+			
 		}
 		else
 		{
@@ -46,6 +90,6 @@ public class TPControllerV2 : MonoBehaviour {
 		XControllerAxis = Input.GetAxis("L_XAxis_1");
 		YControllerAxis = Input.GetAxis("L_YAxis_1");
 			
-		movementVector = new Vector3(XControllerAxis, 0 , YControllerAxis);
+		stickDirection = new Vector3(-XControllerAxis, 0 , YControllerAxis);
 	}
 }

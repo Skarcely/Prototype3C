@@ -6,12 +6,13 @@ public class TPCamera : MonoBehaviour {
 	
 	public float distanceUp;
 	public float distanceAway;
+	public float smoothTime;
 	
 	public Transform follow;
 	
 	
 	private Vector3 targetPosition;
-	public float smoothTime;
+	
 	
 	// Use this for initialization
 	void Start () {
@@ -25,7 +26,7 @@ public class TPCamera : MonoBehaviour {
 		
 		this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
 		
-		transform.LookAt( follow);
+		transform.LookAt(follow);
 		
 	}
 	
