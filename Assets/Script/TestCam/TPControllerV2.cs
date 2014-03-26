@@ -14,8 +14,13 @@ public class TPControllerV2 : MonoBehaviour {
 	private Vector3 cameraForward;
 	private Vector3 cameraRight;
 	
+	private bool playerIsReprogramming;
+	
 	[HideInInspector]
 	public bool isMoving;
+	
+	[HideInInspector]
+	public bool canMove;
 	
 	//Public
 	public float movementSpeed;
@@ -32,6 +37,7 @@ public class TPControllerV2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		CheckInputs();
+		GetExternVar();
 		
 		//Debug
 		Debug.DrawRay(this.transform.position, this.transform.forward, Color.magenta);
@@ -41,21 +47,12 @@ public class TPControllerV2 : MonoBehaviour {
 	void LateUpdate()
 	{
 			
-		if(stickDirection != Vector3.zero)
+		if(stickDirection != Vector3.zero && canMove == true)
 		{
-			
-//			Fonctionnel mais mouvements perso pas en ref à la cam
-			
-			//Rotate le player en fonction de l'input stick
-//			this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, Mathf.Atan2(XControllerAxis, YControllerAxis) * Mathf.Rad2Deg, this.transform.eulerAngles.z);
-//			
-//			this.transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed);
+			isMoving = true;
 			previousAngle = this.transform.eulerAngles;
+			
 			//Fonctionnel
-			
-			
-			//Test 1
-	
 			//Get Forward and Right from Camera
 			Vector3 modifiedDirForward = refCam.TransformDirection(Vector3.forward);
 			modifiedDirForward.y = 0.0f;
@@ -72,27 +69,20 @@ public class TPControllerV2 : MonoBehaviour {
 			
 			if(composedTranslate != Vector3.zero)
 			{
-				isMoving = true;
-				
-				Debug.DrawRay(this.transform.position, composedTranslate, Color.red);
+				//Debug.DrawRay(this.transform.position, composedTranslate, Color.red);
 			
 				Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
 			
 				this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
 				
-			}
-			else
-			{
-				isMoving = false;
-			}
-			
+			}	
 	
 		}
 		else
 		{
-		
-			this.transform.eulerAngles = previousAngle;
+			isMoving = false;
+			//this.transform.eulerAngles = previousAngle;
 			
 		}
 
@@ -107,8 +97,28 @@ public class TPControllerV2 : MonoBehaviour {
 		stickDirection = new Vector3(-XControllerAxis, 0 , YControllerAxis);
 	}
 	
+	
+	void GetExternVar()
+	{
+	
+		playerIsReprogramming = (GameObject.FindObjectOfType(System.Type.GetType("CrosshairLock")) as CrosshairLock).isModifying;
+		
+	}
+	
 	void VarInitialize()
 	{
-		isMoving = false;	
+		isMoving = false;
+		canMove = true;
+	}
+	
+	public void FreezeMovement()
+	{
+		canMove = false;	
+		
+	}
+	
+	public void FreeMovement()
+	{
+		canMove = true;	
 	}
 }

@@ -86,8 +86,8 @@ public class ReprogrammingStuff : MonoBehaviour {
 				isTranslatingX = false;
 				isTranslatingY = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPControllerV2).FreeMovement();
 			}
 			
 			if(Input.GetButton ("B_1"))

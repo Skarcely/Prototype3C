@@ -283,7 +283,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1409437010}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 2.5, z: -6.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -302,14 +302,24 @@ MonoBehaviour:
   distanceAway: 6
   smoothTime: 20
   dampTime: 18
-  follow: {fileID: 1837060070}
+  followTarget: {fileID: 1837060070}
+  player: {fileID: 1177810146}
+  horizontalAimingSpeed: 270
+  verticalAimingSpeed: 270
+  minVerticalAngle: -30
+  maxVerticalAngle: 80
+  pivotOffset: {x: 0, y: 1.39999998, z: -.5}
+  camOffset: {x: 0, y: .600000024, z: -6}
+  closeOffset: {x: .349999994, y: 1.70000005, z: 0}
+  playerCanRotate: 0
+  playerIsRotatingCamera: 0
 --- !u!114 &1409437017
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1409437010}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22a858619bad0eb48ae0ae9aa9c3299c, type: 3}
   m_Name: 
@@ -466,6 +476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
+  canMove: 0
   movementSpeed: 5
   smoothRotation: 2
   refCam: {fileID: 1409437015}
@@ -492,7 +503,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1837060069}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.35963511, z: -.5}
+  m_LocalPosition: {x: 0, y: 1.39999998, z: -.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1826810798}

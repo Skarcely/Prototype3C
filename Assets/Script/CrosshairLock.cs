@@ -21,14 +21,12 @@ public class CrosshairLock : MonoBehaviour {
 	
 	[HideInInspector]
 	public bool isLocking;
-	
 	[HideInInspector]
 	public bool showCadran;
 	
 	[HideInInspector]
 	public bool isModifying;
 	
-	#region TranslateChecker
 	//TranslateX
 	private bool translateXAvailable;
 	private bool translateXActivated;
@@ -37,13 +35,10 @@ public class CrosshairLock : MonoBehaviour {
 	private bool translateYAvailable;
 	private bool translateYActivated;
 	
-	#endregion
-	
 	private RaycastHit hitTarget;
 	
 	[HideInInspector]
 	public GameObject targetToModify;
-	
 	[HideInInspector]
 	public Vector3 targetStorePosition;
 	
@@ -58,15 +53,13 @@ public class CrosshairLock : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-	
+		//Raycast
 		rayCamToTarget = camera.ScreenPointToRay(new Vector3(xRayTarget,yRayTarget));
 		
-		//Debug
-		//Debug.DrawRay(rayCamToTarget.origin, rayCamToTarget.direction, Color.magenta, 5000000.00f);
-		//Debug.Log("X : " + (Input.GetAxis("R_XAxis_1") + " ; Y = " + (Input.GetAxis("R_YAxis_1"))));
-		
+		//Check hit Method
 		CheckRayHit();
 		
+		//Check player's input
 		CheckInputs();
 			
 	}
@@ -161,8 +154,8 @@ public class CrosshairLock : MonoBehaviour {
 								
 				showCadran = true;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = false;
 				
 				
 				//Si le joystick droit est entre 0 et -x et 0 et -y 
@@ -224,16 +217,16 @@ public class CrosshairLock : MonoBehaviour {
 			{
 				showCadran = false;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = false;
 			}
 			else
 			{
 				
 				showCadran = false;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = true;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = true;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = true;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = true;
 			}
 			
 		}
@@ -241,8 +234,8 @@ public class CrosshairLock : MonoBehaviour {
 		else if(isModifying == true)
 		{
 			
-			(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
-			(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreezeMovement();
+			(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
+			(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreezeMovement();
 			
 		}
 		
