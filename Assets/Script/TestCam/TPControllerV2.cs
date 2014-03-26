@@ -14,6 +14,9 @@ public class TPControllerV2 : MonoBehaviour {
 	private Vector3 cameraForward;
 	private Vector3 cameraRight;
 	
+	[HideInInspector]
+	public bool isMoving;
+	
 	//Public
 	public float movementSpeed;
 	public float smoothRotation;
@@ -23,7 +26,7 @@ public class TPControllerV2 : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
+		VarInitialize();
 	}
 	
 	// Update is called once per frame
@@ -67,15 +70,24 @@ public class TPControllerV2 : MonoBehaviour {
 			//Creating the movement vector
 			Vector3 composedTranslate = Vector3.Lerp(xTranslate, zTranslate, 0.5f);
 			
-			Debug.DrawRay(this.transform.position, composedTranslate, Color.red);
+			if(composedTranslate != Vector3.zero)
+			{
+				isMoving = true;
+				
+				Debug.DrawRay(this.transform.position, composedTranslate, Color.red);
 			
-			Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+				Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
 			
-			this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
+				this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
+				
+			}
+			else
+			{
+				isMoving = false;
+			}
 			
-
-			
+	
 		}
 		else
 		{
@@ -93,5 +105,10 @@ public class TPControllerV2 : MonoBehaviour {
 		YControllerAxis = Input.GetAxis("L_YAxis_1");
 			
 		stickDirection = new Vector3(-XControllerAxis, 0 , YControllerAxis);
+	}
+	
+	void VarInitialize()
+	{
+		isMoving = false;	
 	}
 }

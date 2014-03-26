@@ -7,11 +7,13 @@ public class TPCamera : MonoBehaviour {
 	public float distanceUp;
 	public float distanceAway;
 	public float smoothTime;
+	public float dampTime;
 	
 	public Transform follow;
 	
 	
 	private Vector3 targetPosition;
+	private bool playerIsMoving;
 	
 	
 	// Use this for initialization
@@ -19,16 +21,27 @@ public class TPCamera : MonoBehaviour {
 		
 	}
 	
+	void Update(){
+		playerIsMoving = (GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).isMoving;
+	}
+	
 	// Update is called once per frame
 	void LateUpdate () {
 		
-		targetPosition = follow.position + follow.up * distanceUp - follow.forward * distanceAway;
+		if(playerIsMoving = true)
+		{
+			targetPosition = follow.position + follow.up * distanceUp - follow.forward * distanceAway;
+			this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
+			this.transform.position = targetPosition;
 		
-		this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
-//		this.transform.position = targetPosition;
-		
-		transform.LookAt(follow);
-		
+		var rotation = Quaternion.LookRotation(follow.position - transform.position);
+		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampTime);
+		}
+		else
+		{
+			
+			
+		}
 	}
 	
 }
