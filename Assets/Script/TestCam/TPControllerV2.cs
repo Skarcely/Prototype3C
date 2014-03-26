@@ -69,10 +69,12 @@ public class TPControllerV2 : MonoBehaviour {
 			
 			Debug.DrawRay(this.transform.position, composedTranslate, Color.red);
 			
-			this.transform.Translate(composedTranslate*Time.deltaTime*movementSpeed);
-			
 			Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
 			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+			
+			this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
+			
+
 			
 		}
 		else

@@ -25,6 +25,7 @@ public class TPCamera : MonoBehaviour {
 		targetPosition = follow.position + follow.up * distanceUp - follow.forward * distanceAway;
 		
 		this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
+//		this.transform.position = targetPosition;
 		
 		transform.LookAt(follow);
 		
