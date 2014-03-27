@@ -3,10 +3,7 @@ using System.Collections;
 
 public class TPCamera : MonoBehaviour {
 	
-	
-	private bool wasStanding;
-	private bool wasMoving;
-	
+
 	//Camera autoplacement
 	public float distanceUp;
 	public float distanceAway;
@@ -14,36 +11,29 @@ public class TPCamera : MonoBehaviour {
 	public float dampTime;
 	private Quaternion lastMovementCameraRotation;
 	private Quaternion rotation;
-	
+	private Vector3 targetPosition;
 	public Transform followTarget;
 
-	
 	//Camera Free
+	private float angleH;
+	private float angleV;
 	public Transform player;
 	public float horizontalAimingSpeed;
 	public float verticalAimingSpeed;
 	public float minVerticalAngle;
 	public float maxVerticalAngle;
-	public Vector3 pivotOffset = new Vector3(0.2f, 0.7f,  0.0f); // offset of point from player transform (?) ben0bi
-	public Vector3 camOffset   = new Vector3(0.0f, 0.7f, -3.4f); // offset of camera from pivotOffset (?) ben0bi
-	public Vector3 closeOffset = new Vector3(0.35f, 1.7f, 0.0f); // close offset of camera from pivotOffset (?) ben0bi
-	private float maxCamDistance;
-	protected Transform aimTarget;
+	private Vector3 pivotOffset;
+
 	private Quaternion aimRotation;
 	
-	
+	// Player behaviour variable
 	[HideInInspector]
 	public bool playerCanRotate;
 	[HideInInspector]
 	public bool playerIsRotatingCamera;
-	
-	
-	private Vector3 targetPosition;
 	private bool playerIsMoving;
-	
-	private float angleH;
-	private float angleV;
-	
+	private bool wasMoving;
+	private bool wasStanding;
 	
 	// Use this for initialization
 	void Start () {
@@ -53,11 +43,7 @@ public class TPCamera : MonoBehaviour {
 	void VarInitialize()
 	{
 		playerCanRotate = true;	
-		GameObject g=new GameObject();
-		aimTarget=g.transform;
-		wasMoving = false;
-		wasStanding = false;
-		
+		pivotOffset = followTarget.position;
 	}
 	
 	void Update(){
@@ -65,9 +51,9 @@ public class TPCamera : MonoBehaviour {
 		playerIsMoving = (GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).isMoving;
 		
 		//Debug.Log
-//		Debug.Log ("playerIsMoving = " + playerIsMoving);
-//		Debug.Log ("playerIsRotatingCamera = " + playerIsRotatingCamera);
-		Debug.DrawRay(this.transform.position, this.transform.forward, Color.blue);
+//		Debug.DrawRay(followTarget.position, followTarget.forward, Color.blue);
+//		Debug.Log ("wasStanding = " + wasStanding);
+//		Debug.Log ("wasMoving = " + wasMoving);
 	}
 	
 	// Update is called once per frame
@@ -75,33 +61,39 @@ public class TPCamera : MonoBehaviour {
 		
 		if(playerIsMoving == true)
 		{
-			
+			//Cam rotation
 			rotation = Quaternion.LookRotation(followTarget.position - transform.position);
 			this.transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampTime);
 			
+			//Cam position
 			targetPosition = followTarget.position + followTarget.up * distanceUp - followTarget.forward * distanceAway;
 			this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
-			this.transform.position = targetPosition;
-		
-			rotation = Quaternion.LookRotation(followTarget.position - transform.position);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.deltaTime * dampTime);
-			Debug.Log ("Constraint rotation = "+ rotation);
-
 		}
 		
 		if(playerIsMoving == false && playerCanRotate == true)
 		{
-			if(wasMoving = true)
-			{
-				wasMoving = false;
-				wasStanding = true;	
-			}
 			
 			CheckRightStickInputs();
 			FreeCameraMovement();	
 		}
 	}
+
+	void FreeCameraMovement()
+	{
+			//Clamp de Angle V entre les angles Y min et max		
+			angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
+			
+			//Cam rotation
+			aimRotation = Quaternion.Euler(-angleV, angleH, 0);
+			Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
+			this.transform.rotation = aimRotation;
+		
+			//Cam position
+			this.transform.position = player.position + camYRotation * pivotOffset + aimRotation * new Vector3(0.0f, distanceUp, -distanceAway);;
+
+	}
 	
+		
 
 	void CheckRightStickInputs()
 	{
@@ -121,51 +113,5 @@ public class TPCamera : MonoBehaviour {
 		}
 	}
 	
-	void FreeCameraMovement()
-	{
-			//Clamp de Angle V entre les angles Y min et max		
-			angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
-			
-			// Before changing camera, store the prev aiming distance.
-			// If we're aiming at nothing (the sky), we'll keep this distance.
-			float prevDist = (followTarget.position - this.transform.position).magnitude;
-			
-			aimRotation = Quaternion.Euler(-angleV, angleH, 0);
-			Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
-			
-			this.transform.rotation = aimRotation;
-			Debug.Log ("Free rotation = "+ aimRotation);
-			
-			#region Récupère la position du joueur et détermine la position de la caméra
-			// Find far and close position for the camera
-			Vector3 smoothPlayerPos = Vector3.Lerp(player.position, player.position, smoothTime * Time.deltaTime);
-			smoothPlayerPos.x = player.position.x;
-			smoothPlayerPos.z = player.position.z;
-			
-			Vector3 farCamPoint = smoothPlayerPos + camYRotation * pivotOffset + aimRotation * camOffset;
-			Vector3 closeCamPoint = player.position + camYRotation * closeOffset;
-			
-			//Distance entre far et close. 
-			//Distance = (Vecteur1-Vecteur2).magnitude
-			float farDist = Vector3.Distance(farCamPoint, closeCamPoint);
-			
-			// Smoothly increase maxCamDist up to the distance of farDist
-			maxCamDistance = Mathf.Lerp(maxCamDistance, farDist, 50 * Time.deltaTime);
-			#endregion
-					
-			Vector3 closeToFarDir = (farCamPoint - closeCamPoint) / farDist;
-			
-			this.transform.position = closeCamPoint + closeToFarDir * maxCamDistance;
-		
-		
-			float aimTargetDist;
-			aimTargetDist = Mathf.Max(5, prevDist);
-
-			// Set the aimTarget position according to the distance calculated.
-			// Make the movement slightly smooth.
-			aimTarget.forward = player.forward;
-			aimTarget.position = (this.transform.position + this.transform.forward * aimTargetDist);
-		
-	}
 	
 }

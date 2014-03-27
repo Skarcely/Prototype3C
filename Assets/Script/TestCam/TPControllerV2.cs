@@ -69,7 +69,6 @@ public class TPControllerV2 : MonoBehaviour {
 			
 			if(composedTranslate != Vector3.zero)
 			{
-				//Debug.DrawRay(this.transform.position, composedTranslate, Color.red);
 			
 				Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
@@ -81,9 +80,7 @@ public class TPControllerV2 : MonoBehaviour {
 		}
 		else
 		{
-			isMoving = false;
-			//this.transform.eulerAngles = previousAngle;
-			
+			isMoving = false;			
 		}
 
 	}
