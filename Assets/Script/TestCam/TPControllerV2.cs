@@ -54,7 +54,8 @@ public class TPControllerV2 : MonoBehaviour {
 			
 			//Fonctionnel
 			//Get Forward and Right from Camera
-			Vector3 modifiedDirForward = refCam.TransformDirection(Vector3.forward);
+			//Vector3 modifiedDirForward = refCam.TransformDirection(Vector3.forward);
+			Vector3 modifiedDirForward = refCam.forward;
 			modifiedDirForward.y = 0.0f;
 			modifiedDirForward = modifiedDirForward.normalized;
 			

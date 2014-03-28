@@ -35,6 +35,10 @@ public class TPCamera : MonoBehaviour {
 	private bool wasMoving;
 	private bool wasStanding;
 	
+	//NVARS
+	private Quaternion lastLookRot;
+	private Vector3 lastCamPos;
+	
 	// Use this for initialization
 	void Start () {
 		VarInitialize();
@@ -49,11 +53,6 @@ public class TPCamera : MonoBehaviour {
 	void Update(){
 		
 		playerIsMoving = (GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).isMoving;
-		
-		//Debug.Log
-//		Debug.DrawRay(followTarget.position, followTarget.forward, Color.blue);
-//		Debug.Log ("wasStanding = " + wasStanding);
-//		Debug.Log ("wasMoving = " + wasMoving);
 	}
 	
 	// Update is called once per frame
@@ -68,31 +67,49 @@ public class TPCamera : MonoBehaviour {
 			//Cam position
 			targetPosition = followTarget.position + followTarget.up * distanceUp - followTarget.forward * distanceAway;
 			this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
+			
+			
+			lastCamPos = this.transform.position;
+			lastLookRot = this.transform.rotation;
+			wasMoving = true;
 		}
 		
 		if(playerIsMoving == false && playerCanRotate == true)
 		{
+			if(wasMoving)
+			{
+				angleV = lastLookRot.y;
+				angleH = lastLookRot.x;
+				
+				wasMoving = false;
+			}
+			else
+			{
+				CheckRightStickInputs();
+			}
 			
-			CheckRightStickInputs();
 			FreeCameraMovement();	
 		}
 	}
 
 	void FreeCameraMovement()
 	{
-			//Clamp de Angle V entre les angles Y min et max		
-			angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
+		//Clamp de Angle V entre les angles Y min et max		
+		angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
 			
-			//Cam rotation
-			aimRotation = Quaternion.Euler(-angleV, angleH, 0);
-			Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
-			this.transform.rotation = aimRotation;
+		//Cam rotation
+		aimRotation = Quaternion.Euler(-angleV, angleH, 0);
+		this.transform.rotation = Quaternion.Slerp(lastLookRot, aimRotation, Time.deltaTime * smoothTime);
+			
+		//Cam position
+		Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
+		this.transform.position = Vector3.Lerp(lastCamPos, player.position + camYRotation * pivotOffset + aimRotation * new Vector3(0.0f, distanceUp, -distanceAway), Time.deltaTime * smoothTime);
 		
-			//Cam position
-			this.transform.position = player.position + camYRotation * pivotOffset + aimRotation * new Vector3(0.0f, distanceUp, -distanceAway);;
+		// Check if close enough n shit
+		lastCamPos = this.transform.position;
+		lastLookRot = this.transform.rotation;
 
 	}
-	
 		
 
 	void CheckRightStickInputs()
