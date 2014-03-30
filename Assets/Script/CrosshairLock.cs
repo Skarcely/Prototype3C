@@ -54,7 +54,9 @@ public class CrosshairLock : MonoBehaviour {
 	void Update () 
 	{
 		//Raycast
-		rayCamToTarget = camera.ScreenPointToRay(new Vector3(xRayTarget,yRayTarget));
+		Vector3 centerScreenVector = new Vector3(xRayTarget,yRayTarget);
+		rayCamToTarget = camera.ScreenPointToRay(centerScreenVector);
+		//Debug.DrawRay(Camera.main.camera.transform.position, centerScreenVector);
 		
 		//Check hit Method
 		CheckRayHit();

@@ -15,7 +15,7 @@ public class TPControllerV2 : MonoBehaviour {
 	private Vector3 cameraRight;
 	
 	private bool playerIsReprogramming;
-	
+
 	[HideInInspector]
 	public bool isMoving;
 	
@@ -23,17 +23,19 @@ public class TPControllerV2 : MonoBehaviour {
 	public bool canMove;
 	
 	[HideInInspector]
-	public bool jumpIsPressed;
-	private bool canJump;
+	public bool canBoost;
+	[HideInInspector]
+	public bool boostIsPressed;
+	
 	
 	//Public
 	public float movementSpeed;
 	public float smoothRotation;
 	
+	public float boostCoef;
+	
 	public Transform refCam;
 	public Transform playerGraphics;
-	
-	public float jumpSpeed;
 	
 	// Use this for initialization
 	void Start () {
@@ -70,7 +72,15 @@ public class TPControllerV2 : MonoBehaviour {
 //				{
 					Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+			
+				if(boostIsPressed)
+				{
+					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed*boostCoef);
+				}
+				else
+				{
 					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
+				}
 //				}
 //				else
 //				{
@@ -85,46 +95,28 @@ public class TPControllerV2 : MonoBehaviour {
 			isMoving = false;			
 		}
 		
-		if(jumpIsPressed = true)
-		{
-			Jump();
-		}
 		//Debug
 		//Debug.DrawRay(this.transform.position, this.transform.forward, Color.magenta);
 		
 	}
 	
-	void OnCollisionEnter(Collision col)
-	{
-		if(col.transform.tag == "Ground")
-		{
-			Debug.Log ("isGrounded");
-			canJump = true;
-		}
-	}
-	
-	
+
 	void CheckInputs()
 	{
-		if(Input.GetButtonDown("A_1") == true && canJump == true)
+		if(Input.GetButton("X_1"))
 		{
-			jumpIsPressed = true;
+			boostIsPressed = true;	
 		}
 		else
 		{
-			jumpIsPressed = false;		
+			boostIsPressed = false;
 		}
 		
 		XControllerAxis = Input.GetAxis("L_XAxis_1");
 		YControllerAxis = Input.GetAxis("L_YAxis_1");			
 		stickDirection = new Vector3(-XControllerAxis, 0 , YControllerAxis);
 	}
-	
-	void Jump()
-	{
-		this.rigidbody.AddForce(Vector3.up*Time.deltaTime*jumpSpeed);
-	}
-	
+		
 	void GetExternVar()
 	{
 		playerIsReprogramming = (GameObject.FindObjectOfType(System.Type.GetType("CrosshairLock")) as CrosshairLock).isModifying;
@@ -132,11 +124,7 @@ public class TPControllerV2 : MonoBehaviour {
 	
 	void VarInitialize()
 	{
-		isMoving = false;
-		
-		canJump = true;
-		jumpIsPressed = false;
-		
+		isMoving = false;		
 		canMove = true;
 	}
 	

@@ -2275,12 +2275,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   canMove: 0
-  isJumping: 0
+  canBoost: 0
+  boostIsPressed: 0
   movementSpeed: 5
   smoothRotation: 2
+  boostCoef: 3
   refCam: {fileID: 1409437015}
   playerGraphics: {fileID: 1177810146}
-  jumpSpeed: 20000
 --- !u!1 &1827585123
 GameObject:
   m_ObjectHideFlags: 0
