@@ -15,6 +15,9 @@ public class TPControllerV2 : MonoBehaviour {
 	private Vector3 cameraRight;
 	
 	private bool playerIsReprogramming;
+	
+	private bool isJumping;
+	private bool jumpIsPressed;
 
 	[HideInInspector]
 	public bool isMoving;
@@ -27,6 +30,9 @@ public class TPControllerV2 : MonoBehaviour {
 	[HideInInspector]
 	public bool boostIsPressed;
 	
+	[HideInInspector]
+	public bool isGrabbing;
+	
 	
 	//Public
 	public float movementSpeed;
@@ -36,6 +42,10 @@ public class TPControllerV2 : MonoBehaviour {
 	
 	public Transform refCam;
 	public Transform playerGraphics;
+	
+	public int jumpHeight;
+	public int jumpSpeed;
+	public float airControl;
 	
 	// Use this for initialization
 	void Start () {
@@ -64,14 +74,14 @@ public class TPControllerV2 : MonoBehaviour {
 			//Creating the movement vector
 			Vector3 composedTranslate = Vector3.Lerp(xTranslate, zTranslate, 0.5f);
 			
-			if(composedTranslate != Vector3.zero)
+			if(composedTranslate != Vector3.zero && (isJumping ==false))
 			{
 			
 			//Test si rotate la cam, si c'est le cas, le perso regarde le forward de la cam.
 //				if((GameObject.FindObjectOfType(System.Type.GetType("TPCamera")) as TPCamera).playerIsRotatingCamera == false)
 //				{
-					Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
-					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+				Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
 			
 				if(boostIsPressed)
 				{
@@ -103,7 +113,15 @@ public class TPControllerV2 : MonoBehaviour {
 
 	void CheckInputs()
 	{
-		if(Input.GetButton("X_1"))
+		
+		//Check jump input
+		if((Input.GetButtonDown("A_1")) && (isJumping == false))
+		{
+			Jump();
+
+		}
+		
+		if(Input.GetButton("X_1") && isJumping ==false)
 		{
 			boostIsPressed = true;	
 		}
@@ -124,7 +142,8 @@ public class TPControllerV2 : MonoBehaviour {
 	
 	void VarInitialize()
 	{
-		isMoving = false;		
+		isMoving = false;
+		isGrabbing = false;
 		canMove = true;
 	}
 	
@@ -139,6 +158,61 @@ public class TPControllerV2 : MonoBehaviour {
 	public void FreeMovement()
 	{
 		canMove = true;	
+	}
+	
+	void OnCollisionEnter(Collision collision)
+	{
+		//Check if caracter is grounded
+		if ((collision.gameObject.tag == "Ground") || ( collision.gameObject.tag == "Cube"))
+		{			
+			isJumping = false;	
+			FreeMovement();
+		}
+		
+
+	}
+	
+	void OnTriggerEnter(Collider collider)
+	{
+		if(collider.gameObject.tag == "GrabZone")
+		{
+			Debug.Log ("In GrabZone");
+			
+			Ray grabbingRay = new Ray(this.transform.GetChild(2).transform.position, this.transform.forward);
+			RaycastHit hitTarget;
+			//Debug.DrawRay(this.transform.GetChild(2).transform.position, this.transform.forward , Color.magenta);
+			
+			if(Physics.Raycast(grabbingRay, out hitTarget,20))
+			{
+				Debug.Log (hitTarget.transform.tag);
+				
+				if(hitTarget.transform.tag == "Cube")
+				{
+					
+					
+					isGrabbing = true;
+					
+				}
+				else
+				{
+					isGrabbing = false;
+				}
+			}
+			
+		}
+		else
+		{
+			isGrabbing = false;
+		}
+		
+	}
+
+	void Jump()
+	{
+		jumpIsPressed = false;
+		isJumping = true;
+		//Jump force up an forward
+		this.rigidbody.AddForce(Vector3.up * jumpHeight*Time.deltaTime*1000 + this.transform.forward*jumpSpeed*Time.deltaTime*1000);
 	}
 	
 }
