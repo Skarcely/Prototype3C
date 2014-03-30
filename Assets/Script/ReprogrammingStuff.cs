@@ -185,6 +185,8 @@ public class ReprogrammingStuff : MonoBehaviour {
 		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position = (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetStorePosition;
 		isTranslatingX = false;
 		isTranslatingY = false;
+		isScalingX = false;
+		isScalingY = false;
 		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
 		(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
 	}
