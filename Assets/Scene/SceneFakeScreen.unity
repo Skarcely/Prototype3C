@@ -786,8 +786,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   translateStep: 2
   translateSpeed: 2
+  scaleStep: 2
+  scaleSpeed: 2
   isTranslatingX: 0
   isTranslatingY: 0
+  isScalingX: 0
+  isScalingY: 0
 --- !u!124 &1766730671
 Behaviour:
   m_ObjectHideFlags: 0
@@ -877,6 +881,14 @@ MonoBehaviour:
   cadran_TranslateY_Normal: {fileID: 2800000, guid: b351f0e3867ff8d40a3b78393815f2d2,
     type: 3}
   cadran_TranslateY_Selected: {fileID: 2800000, guid: b49ee0e5218406f409d6dccecd4b8215,
+    type: 3}
+  cadran_ScaleX_Normal: {fileID: 2800000, guid: 1528f9b8f5adfa940ae5e8c2c466e695,
+    type: 3}
+  cadran_ScaleX_Selected: {fileID: 2800000, guid: 2e704681907d1ef4ea8c6cdd4e47ab83,
+    type: 3}
+  cadran_ScaleY_Normal: {fileID: 2800000, guid: 54d5d5dd586de6041a6874b8b93d0971,
+    type: 3}
+  cadran_ScaleY_Selected: {fileID: 2800000, guid: bad59ed8ec6ebe04d9458e6cac9743dc,
     type: 3}
   isLocking: 0
   showCadran: 0

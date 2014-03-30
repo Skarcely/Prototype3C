@@ -12,6 +12,10 @@ public class CrosshairLock : MonoBehaviour {
 	public Texture2D cadran_TranslateX_Selected;
 	public Texture2D cadran_TranslateY_Normal;
 	public Texture2D cadran_TranslateY_Selected;
+	public Texture2D cadran_ScaleX_Normal;
+	public Texture2D cadran_ScaleX_Selected;
+	public Texture2D cadran_ScaleY_Normal;
+	public Texture2D cadran_ScaleY_Selected;
 	
 	//Private
 	private int xRayTarget;
@@ -34,6 +38,15 @@ public class CrosshairLock : MonoBehaviour {
 	//TranslateY
 	private bool translateYAvailable;
 	private bool translateYActivated;
+	
+	//ScaleX
+	private bool scaleXAvailable;
+	private bool scaleXActivated;
+	
+	//ScaleY
+	private bool scaleYAvailable;
+	private bool scaleYActivated;
+	
 	
 	private int activeMode = 0; // Langage actif
 	private int nbModes = 2; // Nombre de langages possedes
@@ -119,6 +132,34 @@ public class CrosshairLock : MonoBehaviour {
 				
 			}
 			
+			//Si le scale X est dispo
+			if(scaleXAvailable == true)
+			{
+				
+				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleX_Normal);
+				
+			}
+			if(scaleXActivated == true)
+			{
+				
+				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleX_Selected);
+				
+			}
+			
+			// Si le scale Y est dispo
+			if(scaleYAvailable == true)
+			{
+				
+				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleY_Normal);
+				
+			}
+			if(scaleYActivated == true)
+			{
+				
+				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleY_Selected);
+				
+			}
+			
 			
 			if (activeMode == 0)
 			{
@@ -126,6 +167,8 @@ public class CrosshairLock : MonoBehaviour {
 				
 				translateXAvailable = true;
 				translateYAvailable = true;
+				scaleXAvailable = false;
+				scaleYAvailable = false;
 			}
 			
 			if (activeMode == 1)
@@ -134,6 +177,8 @@ public class CrosshairLock : MonoBehaviour {
 				
 				translateXAvailable = false;
 				translateYAvailable = false;
+				scaleXAvailable = true;
+				scaleYAvailable = true;
 			}
 			
 			#endregion*/
@@ -223,12 +268,30 @@ public class CrosshairLock : MonoBehaviour {
 					
 				}
 				
+				else if( scaleXAvailable && ((Input.GetAxis("R_XAxis_1") <= -0.1) && (Input.GetAxis("R_YAxis_1") <= -0.1)) )
+				{
+				
+					//Juste visuel
+					scaleXActivated = true;
+					
+				
+				} 
+				
+				else if( ((Input.GetAxis ("R_XAxis_1") >= 0.1 && Input.GetAxis ("R_XAxis_1") >= -0.1 )) && scaleYAvailable)
+				{
+					scaleYActivated = true;
+					
+					
+				}
+				
 				// Pour l'instant juste un ELSE, mais après ajout d'autres fonctions, les tests devront etre complets
 				else
 				{
 					
 					translateXActivated = false;
 					translateYActivated = false;
+					scaleXActivated = false;
+					scaleYActivated = false;
 					
 				}
 					
@@ -251,6 +314,8 @@ public class CrosshairLock : MonoBehaviour {
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
 			}
+			
+			
 			else if(translateYActivated)
 			{
 				showCadran = false;
@@ -262,6 +327,33 @@ public class CrosshairLock : MonoBehaviour {
 				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
+			}
+			
+			else if(scaleXActivated)
+			{
+				
+				showCadran = false;
+				isModifying = true;						
+				scaleXActivated = false;
+						
+				targetToModify = hitTarget.transform.gameObject;
+				targetStorePosition = targetToModify.transform.position;
+				// Debug.Log(targetToModify.tag);
+						
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingX = true;
+			}
+			
+			else if(scaleYActivated)
+			{
+				showCadran = false;
+				isModifying = true;						
+				scaleYActivated = false;
+						
+				targetToModify = hitTarget.transform.gameObject;
+				targetStorePosition = targetToModify.transform.position;
+				// Debug.Log(targetToModify.tag);
+						
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingY = true;
 			}
 			
 			
