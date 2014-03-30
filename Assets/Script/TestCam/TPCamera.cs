@@ -58,7 +58,9 @@ public class TPCamera : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 		
-		if(playerIsMoving == true)
+		CheckRightStickInputs();
+		
+		if(playerIsMoving == true && playerIsRotatingCamera == false)
 		{
 			//Cam rotation
 			rotation = Quaternion.LookRotation(followTarget.position - transform.position);
@@ -68,11 +70,26 @@ public class TPCamera : MonoBehaviour {
 			targetPosition = followTarget.position + followTarget.up * distanceUp - followTarget.forward * distanceAway;
 			this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
 			
-			
 			lastCamPos = this.transform.position;
 			lastLookRot = this.transform.rotation;
 			wasMoving = true;
 		}
+		
+//		if(playerIsMoving == true && playerIsRotatingCamera == true)
+//		{
+//			
+//			if(wasMoving)
+//			{
+//				angleV = lastLookRot.y;
+//				angleH = lastLookRot.x;
+//				
+//				wasMoving = false;
+//			}
+//			
+//			FreeCameraMovement();
+//			
+//			
+//		}
 		
 		if(playerIsMoving == false && playerCanRotate == true)
 		{
