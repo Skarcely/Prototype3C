@@ -84,7 +84,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 			
 		}
 		
-		if (TranslateDirection == 1)
+		if (TranslateDirection == 1) //Si Translate Y
 		{
 			isTranslatingX = false;
 			isScalingX = false;
