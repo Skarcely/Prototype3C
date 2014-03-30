@@ -35,6 +35,9 @@ public class CrosshairLock : MonoBehaviour {
 	private bool translateYAvailable;
 	private bool translateYActivated;
 	
+	private int activeMode = 0; // Langage actif
+	private int nbModes = 2; // Nombre de langages possedes
+	
 	private RaycastHit hitTarget;
 	
 	[HideInInspector]
@@ -117,6 +120,22 @@ public class CrosshairLock : MonoBehaviour {
 			}
 			
 			
+			if (activeMode == 0)
+			{
+				// premier cadran a afficher ici
+				
+				translateXAvailable = true;
+				translateYAvailable = true;
+			}
+			
+			if (activeMode == 1)
+			{
+				// deuxieme cadran a afficher ici
+				
+				translateXAvailable = false;
+				translateYAvailable = false;
+			}
+			
 			#endregion*/
 			
 		}
@@ -160,9 +179,11 @@ public class CrosshairLock : MonoBehaviour {
 				//Si le joystick droit est entre 0 et -x et 0 et -y 
 				if( translateXAvailable && ((Input.GetAxis("R_XAxis_1") <= -0.1) && (Input.GetAxis("R_YAxis_1") <= -0.1)) ){
 				
-					//Juste visuel 
+					//Juste visuel
 					translateXActivated = true;
 					
+					
+					/*
 					//Si le joueur sélectionn translate X
 					if(Input.GetButton("RB_1"))
 					{
@@ -177,13 +198,14 @@ public class CrosshairLock : MonoBehaviour {
 						
 						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
 
-					}
+					} */
 				
 				}
 				else if( ((Input.GetAxis ("R_XAxis_1") >= 0.1 && Input.GetAxis ("R_XAxis_1") >= -0.1 )) && translateYAvailable)
 				{
 					translateYActivated = true;
 					
+					/*
 					//Si le joueur sélectionne translate Y
 					if(Input.GetButton("RB_1"))
 					{
@@ -196,7 +218,7 @@ public class CrosshairLock : MonoBehaviour {
 						
 						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
 
-					}
+					} */
 					
 					
 				}
@@ -212,6 +234,37 @@ public class CrosshairLock : MonoBehaviour {
 					
  				
 			}
+			
+			// ajoute par Elias : si le bouton est lache sur translateX ou translateY, on lance la modification. A terme on va avoir un "else if"
+			// pour chaque action possible, pas tres propre :s
+			
+			else if(translateXActivated)
+			{
+				
+				showCadran = false;
+				isModifying = true;						
+				translateXActivated = false;
+						
+				targetToModify = hitTarget.transform.gameObject;
+				targetStorePosition = targetToModify.transform.position;
+				// Debug.Log(targetToModify.tag);
+						
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
+			}
+			else if(translateYActivated)
+			{
+				showCadran = false;
+				isModifying = true;						
+				translateYActivated = false;
+						
+				targetToModify = hitTarget.transform.gameObject;
+				targetStorePosition = targetToModify.transform.position;
+				// Debug.Log(targetToModify.tag);
+						
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
+			}
+			
+			
 			else if( isModifying == true)
 			{
 				showCadran = false;
@@ -219,6 +272,8 @@ public class CrosshairLock : MonoBehaviour {
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = false;
 			}
+			
+			
 			else
 			{
 				
@@ -236,6 +291,31 @@ public class CrosshairLock : MonoBehaviour {
 			(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
 			(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreezeMovement();
 			
+		}
+		
+		
+		// Changement de cadran
+		if(showCadran && Input.GetAxis ("DPad_YAxis_1") >= 0.5)
+		{
+			Debug.Log("chgt cadran");
+			
+			activeMode +=1;
+			
+			if (activeMode == nbModes)
+			{
+				activeMode = 0;
+			}
+		}
+		else if(showCadran && Input.GetAxis ("DPad_YAxis_1") <= -0.5)
+		{
+			Debug.Log("chgt cadran");
+			
+			activeMode -=1;
+			
+			if (activeMode < 0)
+			{
+				activeMode = nbModes;
+			}
 		}
 		
 	
@@ -257,3 +337,4 @@ public class CrosshairLock : MonoBehaviour {
 	}
 	
 }
+
