@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\TestCam\TPCamera.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\TestCam\TPControllerV2.cs">
     <Files>
-      <File FileName="Assets\Script\TestCam\TPCamera.cs" Line="96" Column="26" />
-      <File FileName="Assets\Script\TestCam\TPControllerV2.cs" Line="48" Column="3" />
+      <File FileName="Assets\Script\TestCam\TPControllerV2.cs" Line="109" Column="29" />
+      <File FileName="Assets\Script\TestCam\TPCamera.cs" Line="77" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

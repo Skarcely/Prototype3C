@@ -79,12 +79,12 @@ public class TPCamera : MonoBehaviour {
 			//Si le perso était en train de bouger, prendre les anciennes valeurs de cam pour le 1er placement
 			if(wasMoving)
 			{
-				Debug.Log("Was Moving, now standing");
+//				Debug.Log("Was Moving, now standing");
 				angleV = lastLookRot.y;
 				angleH = lastLookRot.x;
 				
-				Debug.Log("angle V = " + angleV);
-				Debug.Log("angle H = " + angleH);
+//				Debug.Log("angle V = " + angleV);
+//				Debug.Log("angle H = " + angleH);
 				
 				wasMoving = false;
 			}
