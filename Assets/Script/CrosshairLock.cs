@@ -133,7 +133,6 @@ public class CrosshairLock : MonoBehaviour {
 			if(hitTarget.transform.gameObject.tag == "Cube")
 			{
 				isLocking = true;
-				//Debug.Log("Cube hitted");	
 			}
 			else{
 				isLocking = false;	

@@ -57,9 +57,7 @@ public class TPCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		
-		CheckRightStickInputs();
-		
+
 		if(playerIsMoving == true && playerIsRotatingCamera == false)
 		{
 			//Cam rotation
@@ -75,28 +73,18 @@ public class TPCamera : MonoBehaviour {
 			wasMoving = true;
 		}
 		
-//		if(playerIsMoving == true && playerIsRotatingCamera == true)
-//		{
-//			
-//			if(wasMoving)
-//			{
-//				angleV = lastLookRot.y;
-//				angleH = lastLookRot.x;
-//				
-//				wasMoving = false;
-//			}
-//			
-//			FreeCameraMovement();
-//			
-//			
-//		}
-		
+		//Si le personnage ne bouge pas et que le joueur peut bouger la cam. Checker les inputs
 		if(playerIsMoving == false && playerCanRotate == true)
 		{
+			//Si le perso était en train de bouger, prendre les anciennes valeurs de cam pour le 1er placement
 			if(wasMoving)
 			{
+				Debug.Log("Was Moving, now standing");
 				angleV = lastLookRot.y;
 				angleH = lastLookRot.x;
+				
+				Debug.Log("angle V = " + angleV);
+				Debug.Log("angle H = " + angleH);
 				
 				wasMoving = false;
 			}
@@ -107,6 +95,7 @@ public class TPCamera : MonoBehaviour {
 			
 			FreeCameraMovement();	
 		}
+		
 	}
 
 	void FreeCameraMovement()
@@ -117,12 +106,12 @@ public class TPCamera : MonoBehaviour {
 		//Cam rotation
 		aimRotation = Quaternion.Euler(-angleV, angleH, 0);
 		this.transform.rotation = Quaternion.Slerp(lastLookRot, aimRotation, Time.deltaTime * smoothTime);
-			
 		//Cam position
 		Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
 		this.transform.position = Vector3.Lerp(lastCamPos, player.position + camYRotation * pivotOffset + aimRotation * new Vector3(0.0f, distanceUp, -distanceAway), Time.deltaTime * smoothTime);
 		
-		// Check if close enough n shit
+		
+		// Store last position
 		lastCamPos = this.transform.position;
 		lastLookRot = this.transform.rotation;
 
