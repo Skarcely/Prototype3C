@@ -17,6 +17,7 @@ public class TPCamera : MonoBehaviour {
 	//Camera Free
 	private float angleH;
 	private float angleV;
+	public float angleZ;
 	public Transform player;
 	public float horizontalAimingSpeed;
 	public float verticalAimingSpeed;
@@ -80,13 +81,12 @@ public class TPCamera : MonoBehaviour {
 			if(wasMoving)
 			{
 //				Debug.Log("Was Moving, now standing");
-				angleV = lastLookRot.y;
-				angleH = lastLookRot.x;
-				
-//				Debug.Log("angle V = " + angleV);
-//				Debug.Log("angle H = " + angleH);
+				angleV = lastLookRot.eulerAngles.y;
+				angleH = lastLookRot.eulerAngles.x;
+//				angleZ = lastLookRot.eulerAngles.z;
 				
 				wasMoving = false;
+				wasStanding = true;
 			}
 			else
 			{
@@ -101,19 +101,19 @@ public class TPCamera : MonoBehaviour {
 	void FreeCameraMovement()
 	{
 		//Clamp de Angle V entre les angles Y min et max		
-		angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
-			
-		//Cam rotation
-		aimRotation = Quaternion.Euler(-angleV, angleH, 0);
+		angleH = Mathf.Clamp(angleH, minVerticalAngle, maxVerticalAngle);
+		
+		aimRotation = Quaternion.Euler(angleH, angleV, 0);
 		this.transform.rotation = Quaternion.Slerp(lastLookRot, aimRotation, Time.deltaTime * smoothTime);
-		//Cam position
-		Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
+
+		Quaternion camYRotation = Quaternion.identity;
+	
 		this.transform.position = Vector3.Lerp(lastCamPos, player.position + camYRotation * pivotOffset + aimRotation * new Vector3(0.0f, distanceUp, -distanceAway), Time.deltaTime * smoothTime);
-		
-		
+
 		// Store last position
 		lastCamPos = this.transform.position;
 		lastLookRot = this.transform.rotation;
+		angleZ = lastLookRot.eulerAngles.z;
 
 	}
 		
@@ -121,10 +121,10 @@ public class TPCamera : MonoBehaviour {
 	void CheckRightStickInputs()
 	{
 		//Définition de l'horizontalité entre -1 et 1
-		angleH += Mathf.Clamp(Input.GetAxis("R_XAxis_1")  , -1, 1) * horizontalAimingSpeed * Time.deltaTime;
+		angleV += Mathf.Clamp(Input.GetAxis("R_XAxis_1")  , -1, 1) * horizontalAimingSpeed * Time.deltaTime;
 									
 		//Définition de la verticalité entre -1 et 1
-		angleV += Mathf.Clamp(Input.GetAxis("R_YAxis_1")  , -1, 1) * verticalAimingSpeed * Time.deltaTime;
+		angleH += Mathf.Clamp(Input.GetAxis("R_YAxis_1")  , -1, 1) * verticalAimingSpeed * Time.deltaTime;
 				
 		if (Input.GetAxis("R_XAxis_1") !=0 || Input.GetAxis("R_YAxis_1") != 0 )
 		{
