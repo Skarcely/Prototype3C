@@ -24,6 +24,16 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 	private Vector3 scaleVector;
 	
+	private bool translateXMax = false;
+	private bool translateXMin = false;
+	private bool translateYMax = false;
+	private bool translateYMin = false;
+	
+	private bool scaleXMax = false;
+	private bool scaleXMin = false;
+	private bool scaleYMax = false;
+	private bool scaleYMin = false;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -33,6 +43,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 	void Update () {
 		
 		CheckValidation();
+		LimitManager();
 	
 		if(isTranslatingX)
 		{
@@ -68,12 +79,12 @@ public class ReprogrammingStuff : MonoBehaviour {
 			isScalingY = false;
 			
 			
-			if(Input.GetAxis("L_XAxis_1") >= 0.1)
+			if(Input.GetAxis("L_XAxis_1") >= 0.1 && !translateXMax)
 			{
 				translateVector = new Vector3(translateStep, 0,0);
 				target.transform.Translate(translateVector*Time.deltaTime*translateSpeed);
 			}
-			else if(Input.GetAxis ("L_XAxis_1")<= -0.1)
+			else if(Input.GetAxis ("L_XAxis_1")<= -0.1 && !translateXMin)
 			{
 			
 				translateVector = new Vector3(-translateStep, 0,0);
@@ -88,12 +99,13 @@ public class ReprogrammingStuff : MonoBehaviour {
 			isTranslatingX = false;
 			isScalingX = false;
 			isScalingY = false;
-			if(Input.GetAxis("L_YAxis_1") >= 0.1)
+			
+			if(Input.GetAxis("L_YAxis_1") >= 0.1 && !translateYMax)
 			{
 				translateVector = new Vector3(0, translateStep,0);
 				target.transform.Translate(translateVector*Time.deltaTime*translateSpeed);
 			}
-			else if(Input.GetAxis ("L_YAxis_1") <= -0.1)
+			else if(Input.GetAxis ("L_YAxis_1") <= -0.1 && !translateYMin)
 			{
 			
 				translateVector = new Vector3(0, -translateStep,0);
@@ -116,12 +128,12 @@ public class ReprogrammingStuff : MonoBehaviour {
 			isTranslatingX = false;
 			isScalingY = false;
 			
-			if(Input.GetAxis("L_XAxis_1") >= 0.1)
+			if(Input.GetAxis("L_XAxis_1") >= 0.1 && !scaleXMax)
 			{
 				scaleVector = new Vector3(scaleStep, 0,0);
 				target.transform.localScale += (scaleVector*Time.deltaTime*scaleSpeed);
 			}
-			else if(Input.GetAxis ("L_XAxis_1")<= -0.1)
+			else if(Input.GetAxis ("L_XAxis_1")<= -0.1 && !scaleXMin)
 			{
 			
 				scaleVector = new Vector3(-scaleStep, 0,0);
@@ -137,12 +149,12 @@ public class ReprogrammingStuff : MonoBehaviour {
 			isTranslatingX = false;
 			isScalingX= false;
 			
-			if(Input.GetAxis("L_YAxis_1") >= 0.1)
+			if(Input.GetAxis("L_YAxis_1") >= 0.1 && !scaleYMax)
 			{
 				scaleVector = new Vector3(0, scaleStep,0);
 				target.transform.localScale += (scaleVector*Time.deltaTime*scaleSpeed);
 			}
-			else if(Input.GetAxis ("L_YAxis_1")<= -0.1)
+			else if(Input.GetAxis ("L_YAxis_1")<= -0.1 && !scaleYMin)
 			{
 			
 				scaleVector = new Vector3(0, -scaleStep,0);
@@ -189,6 +201,107 @@ public class ReprogrammingStuff : MonoBehaviour {
 		isScalingY = false;
 		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
 		(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
+	}
+	
+	
+	private void LimitManager()
+	{
+		// Verifier les limites du translate
+		
+	
+		//verifier max X
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.x >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.x + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateX))
+		{
+			translateXMax = true;
+		}
+		else
+		{
+			translateXMax = false;
+		}
+		
+		
+		//verifier min X
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.x <= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.x - ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateX))
+		{
+			translateXMin = true;
+		}
+		else
+		{
+			translateXMin = false;
+		}
+		
+		
+		//verifier max Y
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.y >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.y + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateY))
+		{
+			translateYMax = true;
+		}
+		else
+		{
+			translateYMax = false;
+		}
+		
+		
+		//verifier min Y
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.y <= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.y - ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateY))
+		{
+			translateYMin = true;
+		}
+		else
+		{
+			translateYMin = false;
+		}
+		
+		//________________
+		
+		//Verifier les limites du scale
+		
+		//verifier max X
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.x >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxScaleX))
+		{
+			scaleXMax = true;
+		}
+		else
+		{
+			scaleXMax = false;
+		}
+		
+		
+		//verifier min X
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.x <= /* (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x - */ ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).minScaleX) //)
+		{
+			scaleXMin = true;
+		}
+		else
+		{
+			scaleXMin = false;
+		}
+		
+		//verifier max Y
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.y >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.y + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxScaleY))
+		{
+			scaleYMax = true;
+		}
+		else
+		{
+			scaleYMax = false;
+		}
+		
+		//verifier min Y
+		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.y <= /* (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x - */ ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).minScaleY) //)
+		{
+			scaleYMin = true;
+		}
+		else
+		{
+			scaleYMin = false;
+		}
+		
+		
+		
+		
+		
+		
 	}
 	
 }

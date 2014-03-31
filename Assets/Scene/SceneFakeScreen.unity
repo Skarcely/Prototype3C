@@ -615,6 +615,7 @@ GameObject:
   - 33: {fileID: 1654554062}
   - 65: {fileID: 1654554061}
   - 23: {fileID: 1654554060}
+  - 114: {fileID: 1654554064}
   m_Layer: 8
   m_Name: Cube
   m_TagString: Cube
@@ -670,6 +671,25 @@ Transform:
   m_LocalScale: {x: 6.92967319, y: 2.2096951, z: 7.20492172}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &1654554064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1654554059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e60442251c3c7647a681d72142e9516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTranslateX: 20
+  maxTranslateY: 20
+  maxScaleX: 10
+  maxScaleY: 10
+  minScaleX: 1
+  minScaleY: 1
+  initialPos: {x: 0, y: 0, z: 0}
+  initialScale: {x: 0, y: 0, z: 0}
 --- !u!1 &1745789979
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,6 +894,7 @@ MonoBehaviour:
   crosshairNormal: {fileID: 2800000, guid: 0288c8d31b071494da77953be82de68c, type: 3}
   crosshairLock: {fileID: 2800000, guid: 0e3faafdce65f554392c019cf1a366ce, type: 3}
   cadran: {fileID: 2800000, guid: b6e5e9d8834141f4f8e6b5e0f7a69ee1, type: 3}
+  cadran2: {fileID: 2800000, guid: 7fa8111edf88eb846beace3c0a6c6ec5, type: 3}
   cadran_TranslateX_Normal: {fileID: 2800000, guid: f00456ae78141bb439c5e7de958e38fa,
     type: 3}
   cadran_TranslateX_Selected: {fileID: 2800000, guid: 560c7b0fa07c87c4e8cff20f29f49644,
