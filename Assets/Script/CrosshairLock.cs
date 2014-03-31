@@ -8,6 +8,7 @@ public class CrosshairLock : MonoBehaviour {
 	public Texture2D crosshairNormal;
 	public Texture2D crosshairLock;
 	public Texture2D cadran;
+	public Texture2D cadran2;
 	public Texture2D cadran_TranslateX_Normal;
 	public Texture2D cadran_TranslateX_Selected;
 	public Texture2D cadran_TranslateY_Normal;
@@ -54,6 +55,7 @@ public class CrosshairLock : MonoBehaviour {
 	private int activeMode = 0; // Langage actif
 	private int nbModes = 2; // Nombre de langages possedes
 	private int cooldownCadran; // pour pas que l'appui sur le D-pad trigger le changement plusieurs fois
+	
 	
 	private RaycastHit hitTarget;
 	
@@ -111,7 +113,38 @@ public class CrosshairLock : MonoBehaviour {
 		//Si Appuie sur LT
 		if(showCadran == true)
 		{
-			GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 256,256), cadran);
+			
+			if (activeMode == 0)
+			{
+				// premier cadran a afficher ici
+				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 256,256), cadran);
+				
+			
+				GUI.DrawTexture(new Rect(Screen.width/2 - 256, Screen.height/2 - 32, 128,64), Lang1);
+				
+				translateXAvailable = true;
+				translateYAvailable = true;
+				scaleXAvailable = false;
+				scaleYAvailable = false;
+			}
+			
+			if (activeMode == 1)
+			{
+				// deuxieme cadran a afficher ici
+				
+				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran2.width/2), Screen.height/2 - (cadran2.height/2), 256,256), cadran2);
+				
+				GUI.DrawTexture(new Rect(Screen.width/2 - 256, Screen.height/2 - 32, 128,64), Lang2);
+				GUI.contentColor = Color.green;
+				
+				translateXAvailable = false;
+				translateYAvailable = false;
+				scaleXAvailable = true;
+				scaleYAvailable = true;
+			}
+			
+			
+			
 			
 			#region Translate X
 			//Si le translate X est dispo
@@ -175,29 +208,6 @@ public class CrosshairLock : MonoBehaviour {
 			}
 			
 			
-			if (activeMode == 0)
-			{
-				// premier cadran a afficher ici
-				
-				GUI.DrawTexture(new Rect(Screen.width/2 - 256, Screen.height/2 - 32, 128,64), Lang1);
-				
-				translateXAvailable = true;
-				translateYAvailable = true;
-				scaleXAvailable = false;
-				scaleYAvailable = false;
-			}
-			
-			if (activeMode == 1)
-			{
-				// deuxieme cadran a afficher ici
-				
-				GUI.DrawTexture(new Rect(Screen.width/2 - 256, Screen.height/2 - 32, 128,64), Lang2);
-				
-				translateXAvailable = false;
-				translateYAvailable = false;
-				scaleXAvailable = true;
-				scaleYAvailable = true;
-			}
 			
 			#endregion*/
 			
@@ -219,6 +229,7 @@ public class CrosshairLock : MonoBehaviour {
 			else{
 				isLocking = false;	
 			}
+			(hitTarget.transform.gameObject.GetComponent("ModifLimit") as ModifLimit).initialPos
 		}
 		
 	}
