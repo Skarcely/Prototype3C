@@ -890,6 +890,8 @@ MonoBehaviour:
     type: 3}
   cadran_ScaleY_Selected: {fileID: 2800000, guid: bad59ed8ec6ebe04d9458e6cac9743dc,
     type: 3}
+  Lang1: {fileID: 2800000, guid: 32e7148ad42a4d44c90ffc841e764f9a, type: 3}
+  Lang2: {fileID: 2800000, guid: 012e2fed804d3d447908bffcd00b242b, type: 3}
   isLocking: 0
   showCadran: 0
   isModifying: 0

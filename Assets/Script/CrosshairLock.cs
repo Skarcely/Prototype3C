@@ -16,6 +16,9 @@ public class CrosshairLock : MonoBehaviour {
 	public Texture2D cadran_ScaleX_Selected;
 	public Texture2D cadran_ScaleY_Normal;
 	public Texture2D cadran_ScaleY_Selected;
+	public Texture2D Lang1;
+	public Texture2D Lang2;
+	
 	
 	//Private
 	private int xRayTarget;
@@ -176,6 +179,8 @@ public class CrosshairLock : MonoBehaviour {
 			{
 				// premier cadran a afficher ici
 				
+				GUI.DrawTexture(new Rect(Screen.width/2 - 256, Screen.height/2 - 32, 128,64), Lang1);
+				
 				translateXAvailable = true;
 				translateYAvailable = true;
 				scaleXAvailable = false;
@@ -185,6 +190,8 @@ public class CrosshairLock : MonoBehaviour {
 			if (activeMode == 1)
 			{
 				// deuxieme cadran a afficher ici
+				
+				GUI.DrawTexture(new Rect(Screen.width/2 - 256, Screen.height/2 - 32, 128,64), Lang2);
 				
 				translateXAvailable = false;
 				translateYAvailable = false;
@@ -425,7 +432,7 @@ public class CrosshairLock : MonoBehaviour {
 				
 				if (activeMode < 0)
 				{
-					activeMode = nbModes;
+					activeMode = nbModes-1;
 				}
 				cooldownCadran = 0;
 			}
