@@ -17,7 +17,8 @@ public class TPCamera : MonoBehaviour {
 	//Camera Free
 	private float angleH;
 	private float angleV;
-	public float angleZ;
+	private float angleZ;
+	
 	public Transform player;
 	public float horizontalAimingSpeed;
 	public float verticalAimingSpeed;
@@ -33,8 +34,11 @@ public class TPCamera : MonoBehaviour {
 	[HideInInspector]
 	public bool playerIsRotatingCamera;
 	private bool playerIsMoving;
-	private bool wasMoving;
-	private bool wasStanding;
+	
+	[HideInInspector]
+	public bool wasMoving;
+	[HideInInspector]
+	public bool wasStanding;
 	
 	//NVARS
 	private Quaternion lastLookRot;
@@ -47,11 +51,16 @@ public class TPCamera : MonoBehaviour {
 	
 	void VarInitialize()
 	{
+		wasStanding = true;
+		wasMoving = false;
+		
 		playerCanRotate = true;	
 		pivotOffset = followTarget.position;
 	}
 	
 	void Update(){
+		
+		Debug.DrawRay(this.transform.position, this.transform.forward,Color.cyan);
 		
 		playerIsMoving = (GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).isMoving;
 	}
@@ -61,12 +70,13 @@ public class TPCamera : MonoBehaviour {
 
 		if(playerIsMoving == true && playerIsRotatingCamera == false)
 		{
-			
 			if(wasStanding)	
 			{
-				this.transform.rotation = lastLookRot;
-				this.transform.position = lastCamPos;
+				Debug.Log("Was standing, now moving");
 				
+//				player.transform.rotation = this.transform.rotation;
+				player.transform.LookAt(this.transform.position + this.transform.forward*40);
+					
 				wasStanding = false;
 				wasMoving = true;
 			}
@@ -79,7 +89,10 @@ public class TPCamera : MonoBehaviour {
 				//Cam position
 				targetPosition = followTarget.position + followTarget.up * distanceUp - followTarget.forward * distanceAway;
 				this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
+				//this.transform.position=targetPosition;
 				
+				
+					
 				lastCamPos = this.transform.position;
 				lastLookRot = this.transform.rotation;
 				wasMoving = true;
@@ -125,10 +138,21 @@ public class TPCamera : MonoBehaviour {
 		// Store last position
 		lastCamPos = this.transform.position;
 		lastLookRot = this.transform.rotation;
-		angleZ = lastLookRot.eulerAngles.z;
-
 	}
 		
+	void ResetCamera()
+	{
+		//Cam rotation
+		rotation = Quaternion.LookRotation(followTarget.position - transform.position);
+		this.transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampTime);
+		
+		//Cam position
+		targetPosition = followTarget.position + followTarget.up * distanceUp - followTarget.forward * distanceAway;
+		this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
+		
+		lastCamPos = this.transform.position;
+		lastLookRot = this.transform.rotation;
+	}
 
 	void CheckRightStickInputs()
 	{

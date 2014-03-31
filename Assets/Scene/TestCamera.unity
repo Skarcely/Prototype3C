@@ -1704,12 +1704,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d8ca1a22276d124b956ce0ef4ce3b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceUp: .600000024
+  distanceUp: 0
   distanceAway: 6
   smoothTime: 12
   dampTime: 18
   followTarget: {fileID: 1837060070}
-  angleZ: 0
   player: {fileID: 1177810146}
   horizontalAimingSpeed: 150
   verticalAimingSpeed: 150
@@ -1717,6 +1716,8 @@ MonoBehaviour:
   maxVerticalAngle: 60
   playerCanRotate: 0
   playerIsRotatingCamera: 0
+  wasMoving: 0
+  wasStanding: 0
 --- !u!114 &1409437017
 MonoBehaviour:
   m_ObjectHideFlags: 0

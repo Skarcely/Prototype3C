@@ -76,13 +76,18 @@ public class TPControllerV2 : MonoBehaviour {
 			
 			if(composedTranslate != Vector3.zero && (isJumping ==false))
 			{
-			
-			//Test si rotate la cam, si c'est le cas, le perso regarde le forward de la cam.
-//				if((GameObject.FindObjectOfType(System.Type.GetType("TPCamera")) as TPCamera).playerIsRotatingCamera == false)
-//				{
-				Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
-			
+				
+				if((GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding == true)
+				{
+					this.transform.rotation = refCam.rotation;
+					(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding = false;
+				}
+				else
+				{
+					Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+				}
+				
 				if(boostIsPressed)
 				{
 					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed*boostCoef);
@@ -90,14 +95,8 @@ public class TPControllerV2 : MonoBehaviour {
 				else
 				{
 					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
+//					this.transform.Translate(refCam.transform.rotation * Vector3.forward * Time.deltaTime*movementSpeed);
 				}
-//				}
-//				else
-//				{
-//					this.transform.LookAt(this.transform.position + modifiedDirForward);
-//					this.transform.forward = modifiedDirForward;
-//				}
-				
 			}			
 		}		
 		else
@@ -106,7 +105,7 @@ public class TPControllerV2 : MonoBehaviour {
 		}
 		
 		//Debug
-		//Debug.DrawRay(this.transform.position, this.transform.forward, Color.magenta);
+		Debug.DrawRay(this.transform.position, this.transform.forward, Color.yellow);
 		
 	}
 	
@@ -180,7 +179,6 @@ public class TPControllerV2 : MonoBehaviour {
 			
 			Ray grabbingRay = new Ray(this.transform.GetChild(2).transform.position, this.transform.forward);
 			RaycastHit hitTarget;
-			//Debug.DrawRay(this.transform.GetChild(2).transform.position, this.transform.forward , Color.magenta);
 			
 			if(Physics.Raycast(grabbingRay, out hitTarget,20))
 			{
