@@ -18,15 +18,28 @@ public class enemyBehavior : MonoBehaviour {
 	private bool isMoving;
 	private float patternLenght;
 	private float tempPatternLenght;
-	private Vector3 patternLenghtVector;
 	private bool hasAggro;
 
 	// Use this for initialization
 	void Start ()
 	{
 		initVar();
+		createSpawnPoint();
+	}
+
+	void initVar()
+	{
+		initPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+		patternLenght = Vector3.Distance(initPos, pos);
+		firstPos = initPos;
+		firstRotation = this.transform.rotation;
 		isMoving = true;
 		hasAggro = false;
+	}
+
+	void createSpawnPoint()
+	{
+		Instantiate(startPoint, initPos, firstRotation);
 	}
 	
 	// Update is called once per frame
@@ -37,45 +50,46 @@ public class enemyBehavior : MonoBehaviour {
 		testAggro();
 	}
 
-	void lateUpdate()
-	{
-
-	}
-
-	//Enemy is moving every frame in front of him
 	void move()
-	{
-		if (isMoving ==  true)
+	{	
+		//Enemy is moving every frame in front of him
+		if ((isMoving == true) && (hasAggro == false))
 		{
 			this.transform.Translate(Vector3.forward*speedEnemy*Time.deltaTime);
 		}
 	}
 		
-
-	//Check if enemy has turn
 	void checkPattern()
 	{
+		//Check if enemy is at the max of the distance allowed for the movement pattern
 		if (patternLenght > paternMax)
 		{
 			this.transform.forward = -this.transform.forward;
 			resetPattern();
-		
 		}
 	}
 
+	void chasePlayer()
+	{
+			hasAggro = true;
+			// enemy is chasing the player
+			// get the player position
+			this.transform.rotation = Quaternion.LookRotation(perso.transform.position - this.transform.position);
+			// move the enemyqz
+			this.transform.Translate(Vector3.forward*speedEnemy*Time.deltaTime);		
+	}
+
+	void returnToPattern()
+	{
+		Debug.Log("Returning");
+		this.transform.rotation = Quaternion.LookRotation(firstPos - this.transform.position);
+		this.transform.Translate(Vector3.forward*speedEnemy*Time.deltaTime);	
+	}
 	//Check Pattern lenght every frame
 	void storePos()
 	{
 	 	pos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
 	 	patternLenght = Vector3.Distance(initPos, pos);
-	}
-
-	void initVar()
-	{
-		initPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
-		patternLenght = Vector3.Distance(initPos, pos);
-		firstPos = initPos;
-		firstRotation = this.transform.rotation;
 	}
 
 	//Turn back when pattern is over
@@ -86,15 +100,9 @@ public class enemyBehavior : MonoBehaviour {
 
 	void testAggro()
 	{
-		if (((GameObject.FindObjectOfType(System.Type.GetType ("aggroZone")) as aggroZone).aggro == true) && (hasAggro == false))
+		if ((GameObject.FindObjectOfType(System.Type.GetType ("aggroZone")) as aggroZone).aggro == true)
 		{
-			Debug.Log("WTF");
-			//store temp var for the Caract to get back to previous Pos
-			tempPos = this.transform.position;
-			tempPatternLenght = Vector3.Distance(initPos, pos);
-			//enemy is following the caract
-			this.transform.rotation = Quaternion.LookRotation(perso.transform.position - this.transform.position);
-			hasAggro = true;
+			chasePlayer();		
 		}
 
 		if (((GameObject.FindObjectOfType(System.Type.GetType ("aggroZone")) as aggroZone).aggro == false) && (hasAggro == true))
@@ -103,16 +111,13 @@ public class enemyBehavior : MonoBehaviour {
 		}
 	}
 
-	void returnToPattern()
+	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log("ok");
-		this.transform.LookAt(firstPos);
-		if (this.transform.position == firstPos)
+		if ((collision.gameObject.tag == "spawnZone") && (hasAggro == true))
 		{
-			Debug.Log("Ok colis bien arrivé");
+			Debug.Log("Honey I'm Home !");
 			this.transform.rotation = firstRotation;
 			hasAggro = false;
 		}
-		
 	}
 }
