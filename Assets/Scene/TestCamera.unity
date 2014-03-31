@@ -1625,6 +1625,7 @@ GameObject:
   - 81: {fileID: 1409437011}
   - 114: {fileID: 1409437016}
   - 114: {fileID: 1409437017}
+  - 114: {fileID: 1409437018}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1704,14 +1705,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceUp: 0
-  distanceAway: 6
+  distanceAway: 5.5
   smoothTime: 12
-  dampTime: 18
+  dampTime: 12
   followTarget: {fileID: 1837060070}
-  player: {fileID: 1177810146}
-  horizontalAimingSpeed: 150
-  verticalAimingSpeed: 150
-  minVerticalAngle: -10
+  player: {fileID: 1826810798}
+  horizontalAimingSpeed: 170
+  verticalAimingSpeed: 170
+  minVerticalAngle: -5
   maxVerticalAngle: 60
   playerCanRotate: 0
   playerIsRotatingCamera: 0
@@ -1728,26 +1729,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a858619bad0eb48ae0ae9aa9c3299c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crosshairNormal: {fileID: 0}
-  crosshairLock: {fileID: 0}
-  cadran: {fileID: 0}
-  cadran2: {fileID: 0}
-  cadran_TranslateX_Normal: {fileID: 0}
-  cadran_TranslateX_Selected: {fileID: 0}
-  cadran_TranslateY_Normal: {fileID: 0}
-  cadran_TranslateY_Selected: {fileID: 0}
-  cadran_ScaleX_Normal: {fileID: 0}
-  cadran_ScaleX_Selected: {fileID: 0}
-  cadran_ScaleY_Normal: {fileID: 0}
-  cadran_ScaleY_Selected: {fileID: 0}
-  Lang1: {fileID: 0}
-  Lang2: {fileID: 0}
+  crosshairNormal: {fileID: 2800000, guid: 0288c8d31b071494da77953be82de68c, type: 3}
+  crosshairLock: {fileID: 2800000, guid: 0e3faafdce65f554392c019cf1a366ce, type: 3}
+  cadran: {fileID: 2800000, guid: b6e5e9d8834141f4f8e6b5e0f7a69ee1, type: 3}
+  cadran2: {fileID: 2800000, guid: 7fa8111edf88eb846beace3c0a6c6ec5, type: 3}
+  cadran_TranslateX_Normal: {fileID: 2800000, guid: f00456ae78141bb439c5e7de958e38fa,
+    type: 3}
+  cadran_TranslateX_Selected: {fileID: 2800000, guid: 560c7b0fa07c87c4e8cff20f29f49644,
+    type: 3}
+  cadran_TranslateY_Normal: {fileID: 2800000, guid: b351f0e3867ff8d40a3b78393815f2d2,
+    type: 3}
+  cadran_TranslateY_Selected: {fileID: 2800000, guid: b49ee0e5218406f409d6dccecd4b8215,
+    type: 3}
+  cadran_ScaleX_Normal: {fileID: 2800000, guid: 1528f9b8f5adfa940ae5e8c2c466e695,
+    type: 3}
+  cadran_ScaleX_Selected: {fileID: 2800000, guid: 2e704681907d1ef4ea8c6cdd4e47ab83,
+    type: 3}
+  cadran_ScaleY_Normal: {fileID: 2800000, guid: 54d5d5dd586de6041a6874b8b93d0971,
+    type: 3}
+  cadran_ScaleY_Selected: {fileID: 2800000, guid: bad59ed8ec6ebe04d9458e6cac9743dc,
+    type: 3}
+  Lang1: {fileID: 2800000, guid: 32e7148ad42a4d44c90ffc841e764f9a, type: 3}
+  Lang2: {fileID: 2800000, guid: 012e2fed804d3d447908bffcd00b242b, type: 3}
   isLocking: 0
   showCadran: 0
   isModifying: 0
   targetToModify: {fileID: 0}
   targetStorePosition: {x: 0, y: 0, z: 0}
   targetStoreScale: {x: 0, y: 0, z: 0}
+--- !u!114 &1409437018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1409437010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a06a6e23855d7e4db3e01ad54f37823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  translateStep: 2
+  translateSpeed: 2
+  scaleStep: 2
+  scaleSpeed: 2
+  isTranslatingX: 0
+  isTranslatingY: 0
+  isScalingX: 0
+  isScalingY: 0
 --- !u!1 &1412792461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1855,6 +1883,7 @@ GameObject:
   - 33: {fileID: 1523774924}
   - 65: {fileID: 1523774923}
   - 23: {fileID: 1523774922}
+  - 114: {fileID: 1523774926}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Cube
@@ -1911,6 +1940,25 @@ Transform:
   m_Children:
   - {fileID: 775401004}
   m_Father: {fileID: 0}
+--- !u!114 &1523774926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1523774921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e60442251c3c7647a681d72142e9516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTranslateX: 20
+  maxTranslateY: 20
+  maxScaleX: 100
+  maxScaleY: 100
+  minScaleX: 1
+  minScaleY: 1
+  initialPos: {x: 0, y: 0, z: 0}
+  initialScale: {x: 0, y: 0, z: 0}
 --- !u!1 &1528636162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2286,7 +2334,7 @@ GameObject:
   - 4: {fileID: 1826810798}
   - 65: {fileID: 1826810796}
   - 54: {fileID: 1826810799}
-  - 114: {fileID: 1826810800}
+  - 114: {fileID: 1826810795}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2294,6 +2342,30 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1826810795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1826810794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d72ff2dbd5eac4285a8bc7433713fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMoving: 0
+  canMove: 0
+  canBoost: 0
+  boostIsPressed: 0
+  isGrabbing: 0
+  movementSpeed: 5
+  smoothRotation: 1.20000005
+  boostCoef: 2
+  refCam: {fileID: 1409437015}
+  playerGraphics: {fileID: 1522801151}
+  jumpHeight: 400
+  jumpSpeed: 200
+  airControl: 0
 --- !u!65 &1826810796
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2336,30 +2408,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1826810800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1826810794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5d72ff2dbd5eac4285a8bc7433713fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMoving: 0
-  canMove: 0
-  canBoost: 0
-  boostIsPressed: 0
-  isGrabbing: 0
-  movementSpeed: 5
-  smoothRotation: 2
-  boostCoef: 3
-  refCam: {fileID: 1409437015}
-  playerGraphics: {fileID: 1177810146}
-  jumpHeight: 400
-  jumpSpeed: 200
-  airControl: 0
 --- !u!1 &1827585123
 GameObject:
   m_ObjectHideFlags: 0

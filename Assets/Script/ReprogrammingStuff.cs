@@ -178,7 +178,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 				isScalingY = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreeMovement();
 			}
 			
 			if(Input.GetButton ("B_1"))
@@ -200,7 +200,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 		isScalingX = false;
 		isScalingY = false;
 		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
-		(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
+		(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreeMovement();
 	}
 	
 	
@@ -208,100 +208,97 @@ public class ReprogrammingStuff : MonoBehaviour {
 	{
 		// Verifier les limites du translate
 		
+		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify)
+		{
+				//verifier max X
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.x >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.x + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateX))
+			{
+				translateXMax = true;
+			}
+			else
+			{
+				translateXMax = false;
+			}
+			
+			
+			//verifier min X
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.x <= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.x - ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateX))
+			{
+				translateXMin = true;
+			}
+			else
+			{
+				translateXMin = false;
+			}
+			
+			
+			//verifier max Y
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.y >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.y + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateY))
+			{
+				translateYMax = true;
+			}
+			else
+			{
+				translateYMax = false;
+			}
+			
+			
+			//verifier min Y
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.y <= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.y - ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateY))
+			{
+				translateYMin = true;
+			}
+			else
+			{
+				translateYMin = false;
+			}
+			
+			//________________
+			
+			//Verifier les limites du scale
+			
+			//verifier max X
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.x >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxScaleX))
+			{
+				scaleXMax = true;
+			}
+			else
+			{
+				scaleXMax = false;
+			}
+			
+			
+			//verifier min X
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.x <= /* (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x - */ ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).minScaleX) //)
+			{
+				scaleXMin = true;
+			}
+			else
+			{
+				scaleXMin = false;
+			}
+			
+			//verifier max Y
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.y >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.y + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxScaleY))
+			{
+				scaleYMax = true;
+			}
+			else
+			{
+				scaleYMax = false;
+			}
+			
+			//verifier min Y
+			if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.y <= /* (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x - */ ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).minScaleY) //)
+			{
+				scaleYMin = true;
+			}
+			else
+			{
+				scaleYMin = false;
+			}
+		}
 	
-		//verifier max X
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.x >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.x + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateX))
-		{
-			translateXMax = true;
-		}
-		else
-		{
-			translateXMax = false;
-		}
-		
-		
-		//verifier min X
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.x <= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.x - ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateX))
-		{
-			translateXMin = true;
-		}
-		else
-		{
-			translateXMin = false;
-		}
-		
-		
-		//verifier max Y
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.y >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.y + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateY))
-		{
-			translateYMax = true;
-		}
-		else
-		{
-			translateYMax = false;
-		}
-		
-		
-		//verifier min Y
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position.y <= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialPos.y - ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxTranslateY))
-		{
-			translateYMin = true;
-		}
-		else
-		{
-			translateYMin = false;
-		}
-		
-		//________________
-		
-		//Verifier les limites du scale
-		
-		//verifier max X
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.x >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxScaleX))
-		{
-			scaleXMax = true;
-		}
-		else
-		{
-			scaleXMax = false;
-		}
-		
-		
-		//verifier min X
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.x <= /* (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x - */ ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).minScaleX) //)
-		{
-			scaleXMin = true;
-		}
-		else
-		{
-			scaleXMin = false;
-		}
-		
-		//verifier max Y
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.y >= (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.y + ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).maxScaleY))
-		{
-			scaleYMax = true;
-		}
-		else
-		{
-			scaleYMax = false;
-		}
-		
-		//verifier min Y
-		if ( (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale.y <= /* (((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).initialScale.x - */ ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.GetComponent("ModifLimit") as ModifLimit).minScaleY) //)
-		{
-			scaleYMin = true;
-		}
-		else
-		{
-			scaleYMin = false;
-		}
-		
-		
-		
-		
-		
-		
 	}
 	
 }

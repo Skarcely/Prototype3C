@@ -61,19 +61,12 @@ public class CrosshairLock : MonoBehaviour {
 	
 	[HideInInspector]
 	public GameObject targetToModify;
+	
 	[HideInInspector]
 	public Vector3 targetStorePosition;
 	[HideInInspector]
 	public Vector3 targetStoreScale;
-	
-	/* [HideInInspector]
-	public var arrPos = new Array();
-	
-	[HideInInspector]
-	public var arrSca = new Array(); */
-	
-	
-	
+		
 	// Use this for initialization
 	void Start () 
 	{
@@ -374,7 +367,6 @@ public class CrosshairLock : MonoBehaviour {
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
 				targetStoreScale = targetToModify.transform.localScale;
-				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingY = true;
 				
@@ -424,7 +416,7 @@ public class CrosshairLock : MonoBehaviour {
 				
 			if(showCadran && Input.GetAxis ("DPad_YAxis_1") >= 0.5)
 			{
-				Debug.Log("chgt cadran");
+//				Debug.Log("chgt cadran");
 				
 				activeMode +=1;
 				
@@ -436,7 +428,7 @@ public class CrosshairLock : MonoBehaviour {
 			}
 			else if(showCadran && Input.GetAxis ("DPad_YAxis_1") <= -0.5)
 			{
-				Debug.Log("chgt cadran");
+//				Debug.Log("chgt cadran");
 				
 				activeMode -=1;
 				

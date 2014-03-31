@@ -54,58 +54,77 @@ public class TPControllerV2 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		CheckInputs();
 		GetExternVar();
 			
+		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
+		{
+			this.transform.LookAt((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform);
+		}
+		
 		if(stickDirection != Vector3.zero && canMove == true)
 		{
 			isMoving = true;
 			
-			//Cam Vectors
-			Vector3 modifiedDirForward = refCam.forward;
-			modifiedDirForward.y = 0.0f;
-			modifiedDirForward = modifiedDirForward.normalized;
-			Vector3 modifiedDirRight = refCam.right;
 			
-			// Setting  x and z to translate
+			Vector3 modifiedDirRight = refCam.transform.right;
+			modifiedDirRight.y = 0;
+			
+			Vector3 modifiedDirForward = refCam.transform.forward;
+			modifiedDirForward.y = 0;
+			
 			Vector3 xTranslate = modifiedDirRight * XControllerAxis * movementSpeed;
-			Vector3 zTranslate = modifiedDirForward * YControllerAxis * movementSpeed;
+			Vector3 yTranslate = modifiedDirForward * YControllerAxis * movementSpeed;
+			Vector3 composedTranslate = Vector3.Lerp(xTranslate, yTranslate, 0.5f);
+			
+			Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
+			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+			
+			this.transform.Translate(composedTranslate * Time.deltaTime * movementSpeed);
+			
+//			//Cam Vectors
+//			Vector3 modifiedDirForward = refCam.forward;
+//			modifiedDirForward.y = 0.0f;
+//			modifiedDirForward = modifiedDirForward.normalized;
+//			Vector3 modifiedDirRight = refCam.right;
+//			
+//			// Setting  x and z to translate
+//			Vector3 xTranslate = modifiedDirRight * XControllerAxis * movementSpeed;
+//			Vector3 zTranslate = modifiedDirForward * YControllerAxis * movementSpeed;
 			
 			//Creating the movement vector
-			Vector3 composedTranslate = Vector3.Lerp(xTranslate, zTranslate, 0.5f);
-			
-			if(composedTranslate != Vector3.zero && (isJumping ==false))
-			{
-				
-				if((GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding == true)
-				{
-					this.transform.rotation = refCam.rotation;
-					(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding = false;
-				}
-				else
-				{
-					Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
-					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
-				}
-				
-				if(boostIsPressed)
-				{
-					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed*boostCoef);
-				}
-				else
-				{
-					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
-//					this.transform.Translate(refCam.transform.rotation * Vector3.forward * Time.deltaTime*movementSpeed);
-				}
-			}			
+//			Vector3 composedTranslate = Vector3.Lerp(xTranslate, zTranslate, 0.5f);
+//			
+//			if(composedTranslate != Vector3.zero && (isJumping ==false))
+//			{
+//				
+//				if((GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding == true)
+//				{
+//					this.transform.rotation = Quaternion.Euler(new Vector3(0.0f,refCam.rotation.eulerAngles.y,refCam.rotation.eulerAngles.z));
+//					(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding = false;
+//				}
+//				else
+//				{
+//					Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
+//					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
+//				}
+//				
+//				if(boostIsPressed)
+//				{
+//					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed*boostCoef);
+//				}
+//				else
+//				{
+//					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
+//
+//				}
+//			}			
 		}		
 		else
 		{
 			isMoving = false;			
 		}
-		
-		//Debug
-		Debug.DrawRay(this.transform.position, this.transform.forward, Color.yellow);
 		
 	}
 	
