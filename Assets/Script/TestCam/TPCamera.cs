@@ -61,17 +61,31 @@ public class TPCamera : MonoBehaviour {
 
 		if(playerIsMoving == true && playerIsRotatingCamera == false)
 		{
-			//Cam rotation
-			rotation = Quaternion.LookRotation(followTarget.position - transform.position);
-			this.transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampTime);
 			
-			//Cam position
-			targetPosition = followTarget.position + followTarget.up * distanceUp - followTarget.forward * distanceAway;
-			this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
+			if(wasStanding)	
+			{
+				this.transform.rotation = lastLookRot;
+				this.transform.position = lastCamPos;
+				
+				wasStanding = false;
+				wasMoving = true;
+			}
+			else
+			{
+				//Cam rotation
+				rotation = Quaternion.LookRotation(followTarget.position - transform.position);
+				this.transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampTime);
+				
+				//Cam position
+				targetPosition = followTarget.position + followTarget.up * distanceUp - followTarget.forward * distanceAway;
+				this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, Time.deltaTime * smoothTime);
+				
+				lastCamPos = this.transform.position;
+				lastLookRot = this.transform.rotation;
+				wasMoving = true;
+			}
+		
 			
-			lastCamPos = this.transform.position;
-			lastLookRot = this.transform.rotation;
-			wasMoving = true;
 		}
 		
 		//Si le personnage ne bouge pas et que le joueur peut bouger la cam. Checker les inputs
@@ -80,10 +94,8 @@ public class TPCamera : MonoBehaviour {
 			//Si le perso était en train de bouger, prendre les anciennes valeurs de cam pour le 1er placement
 			if(wasMoving)
 			{
-//				Debug.Log("Was Moving, now standing");
 				angleV = lastLookRot.eulerAngles.y;
 				angleH = lastLookRot.eulerAngles.x;
-//				angleZ = lastLookRot.eulerAngles.z;
 				
 				wasMoving = false;
 				wasStanding = true;
