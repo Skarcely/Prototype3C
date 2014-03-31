@@ -104,7 +104,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 4e16efcd508ea4848811ba2119b55732, type: 2}
+  - {fileID: 2100000, guid: 2c3779b6df78ad7429dde5620f56057f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1351,6 +1351,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 34ce122ca0c494246b8422aac2fbdeb7, type: 3}
+      propertyPath: m_AnimatePhysics
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34ce122ca0c494246b8422aac2fbdeb7, type: 3}
   m_RootGameObject: {fileID: 1522801150}
@@ -1623,9 +1627,9 @@ GameObject:
   - 92: {fileID: 1409437013}
   - 124: {fileID: 1409437012}
   - 81: {fileID: 1409437011}
-  - 114: {fileID: 1409437016}
   - 114: {fileID: 1409437017}
   - 114: {fileID: 1409437018}
+  - 114: {fileID: 1409437016}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1701,23 +1705,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1409437010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8ca1a22276d124b956ce0ef4ce3b03, type: 3}
+  m_Script: {fileID: 11500000, guid: ca8e9e09aebaceb4da36ea605d852c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceUp: 0
-  distanceAway: 5.5
-  smoothTime: 12
-  dampTime: 12
-  followTarget: {fileID: 1837060070}
   player: {fileID: 1826810798}
-  horizontalAimingSpeed: 170
-  verticalAimingSpeed: 170
-  minVerticalAngle: -5
-  maxVerticalAngle: 60
+  smoothingTime: 10
+  pivotOffset: {x: 0, y: 1, z: 0}
+  camOffset: {x: 0, y: 1, z: -6}
+  closeOffset: {x: 0, y: 0, z: 0}
+  horizontalAimingSpeed: 200
+  verticalAimingSpeed: 200
+  maxVerticalAngle: 80
+  minVerticalAngle: -80
+  mouseSensitivity: .300000012
   playerCanRotate: 0
   playerIsRotatingCamera: 0
-  wasMoving: 0
-  wasStanding: 0
 --- !u!114 &1409437017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2359,11 +2361,11 @@ MonoBehaviour:
   boostIsPressed: 0
   isGrabbing: 0
   movementSpeed: 5
-  smoothRotation: 1.20000005
+  smoothRotation: 6
   boostCoef: 2
   refCam: {fileID: 1409437015}
   playerGraphics: {fileID: 1522801151}
-  jumpHeight: 400
+  jumpHeight: 7
   jumpSpeed: 200
   airControl: 0
 --- !u!65 &1826810796
@@ -2400,7 +2402,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1826810794}
   serializedVersion: 2
-  m_Mass: 20
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: .0500000007
   m_UseGravity: 1

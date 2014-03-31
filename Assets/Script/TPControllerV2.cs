@@ -60,66 +60,35 @@ public class TPControllerV2 : MonoBehaviour {
 			
 		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
 		{
-			this.transform.LookAt((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform);
+			Vector3 dirTarget = refCam.forward;
+			dirTarget.y = 0;
+			playerGraphics.forward = dirTarget;
 		}
 		
 		if(stickDirection != Vector3.zero && canMove == true)
 		{
-			isMoving = true;
-			
-			
+			//Player movement
 			Vector3 modifiedDirRight = refCam.transform.right;
 			modifiedDirRight.y = 0;
 			
 			Vector3 modifiedDirForward = refCam.transform.forward;
 			modifiedDirForward.y = 0;
 			
-			Vector3 xTranslate = modifiedDirRight * XControllerAxis * movementSpeed;
-			Vector3 yTranslate = modifiedDirForward * YControllerAxis * movementSpeed;
+			Vector3 xTranslate = modifiedDirRight * XControllerAxis;
+			Vector3 yTranslate = modifiedDirForward * YControllerAxis;
 			Vector3 composedTranslate = Vector3.Lerp(xTranslate, yTranslate, 0.5f);
 			
-			Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
-			
+			composedTranslate = Vector3.Normalize(composedTranslate);
+			composedTranslate.y = 0;
+
 			this.transform.Translate(composedTranslate * Time.deltaTime * movementSpeed);
 			
-//			//Cam Vectors
-//			Vector3 modifiedDirForward = refCam.forward;
-//			modifiedDirForward.y = 0.0f;
-//			modifiedDirForward = modifiedDirForward.normalized;
-//			Vector3 modifiedDirRight = refCam.right;
-//			
-//			// Setting  x and z to translate
-//			Vector3 xTranslate = modifiedDirRight * XControllerAxis * movementSpeed;
-//			Vector3 zTranslate = modifiedDirForward * YControllerAxis * movementSpeed;
-			
-			//Creating the movement vector
-//			Vector3 composedTranslate = Vector3.Lerp(xTranslate, zTranslate, 0.5f);
-//			
-//			if(composedTranslate != Vector3.zero && (isJumping ==false))
-//			{
-//				
-//				if((GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding == true)
-//				{
-//					this.transform.rotation = Quaternion.Euler(new Vector3(0.0f,refCam.rotation.eulerAngles.y,refCam.rotation.eulerAngles.z));
-//					(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).wasStanding = false;
-//				}
-//				else
-//				{
-//					Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
-//					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, newRotation, Time.deltaTime * smoothRotation);
-//				}
-//				
-//				if(boostIsPressed)
-//				{
-//					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed*boostCoef);
-//				}
-//				else
-//				{
-//					this.transform.Translate(Vector3.forward*Time.deltaTime*movementSpeed);
-//
-//				}
-//			}			
+			//Player graphic rotation
+			if (composedTranslate != Vector3.zero)
+			{
+				Quaternion newRotation = Quaternion.LookRotation(composedTranslate);
+				playerGraphics.rotation = Quaternion.Slerp(playerGraphics.rotation, newRotation, Time.deltaTime * smoothRotation);
+			}			
 		}		
 		else
 		{
@@ -133,13 +102,13 @@ public class TPControllerV2 : MonoBehaviour {
 	{
 		
 		//Check jump input
-		if((Input.GetButtonDown("A_1")) && (isJumping == false))
+		if((Input.GetButtonDown("A_1")) && (isJumping == false) &&  playerIsReprogramming == false)
 		{
 			Jump();
 
 		}
 		
-		if(Input.GetButton("X_1") && isJumping ==false)
+		if(Input.GetButton("X_1") && isJumping == false)
 		{
 			boostIsPressed = true;	
 		}
@@ -229,7 +198,8 @@ public class TPControllerV2 : MonoBehaviour {
 		jumpIsPressed = false;
 		isJumping = true;
 		//Jump force up an forward
-		this.rigidbody.AddForce(Vector3.up * jumpHeight*Time.deltaTime*1000 + this.transform.forward*jumpSpeed*Time.deltaTime*1000);
+//		this.rigidbody.AddForce(Vector3.up * jumpHeight*Time.deltaTime*1000 + this.transform.forward*jumpSpeed*Time.deltaTime*1000);
+		this.rigidbody.AddForce(new Vector3(0,jumpHeight,0),ForceMode.Impulse);
 	}
 	
 }

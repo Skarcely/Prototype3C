@@ -53,7 +53,7 @@ public class CrosshairLock : MonoBehaviour {
 	
 	
 	private int activeMode = 0; // Langage actif
-	private int nbModes = 2; // Nombre de langages possedes
+	private int nbModes = 2; // Nombre de langages
 	private int cooldownCadran; // pour pas que l'appui sur le D-pad trigger le changement plusieurs fois
 	
 	
@@ -78,6 +78,9 @@ public class CrosshairLock : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		xRayTarget = Screen.width/2;
+		yRayTarget = Screen.height/2;
+		
 		//Raycast
 		rayCamToTarget = camera.ScreenPointToRay(new Vector3(xRayTarget,yRayTarget));
 		
@@ -94,13 +97,13 @@ public class CrosshairLock : MonoBehaviour {
 		// Affiche le crosshair de base
 		if(isLocking == false )
 		{
-			GUI.DrawTexture(new Rect(Screen.width/2 - (crosshairNormal.width/2), Screen.height/2 - (crosshairNormal.height/2), 32,32), crosshairNormal);
+			GUI.DrawTexture(new Rect( Screen.width/2 - 16, Screen.height/2 - 16 , 32,32), crosshairNormal);
 		}
 		
 		//Si passe sur un cube
 		if(isLocking == true && showCadran == false)
 		{
-			GUI.DrawTexture(new Rect(Screen.width/2 - (crosshairLock.width/2), Screen.height/2 - (crosshairLock.height/2), 32,32), crosshairLock);	
+			GUI.DrawTexture(new Rect(Screen.width/2 - 16, Screen.height/2 - 16, 32,32), crosshairLock);	
 		}
 		
 		//Si Appuie sur LT
@@ -238,7 +241,7 @@ public class CrosshairLock : MonoBehaviour {
 								
 				showCadran = true;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPCameraV2")) as TPCameraV2).playerCanRotate = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = false;
 				
 				
@@ -380,7 +383,7 @@ public class CrosshairLock : MonoBehaviour {
 			{
 				showCadran = false;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPCameraV2")) as TPCameraV2).playerCanRotate = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = false;
 			}
 			
@@ -390,7 +393,7 @@ public class CrosshairLock : MonoBehaviour {
 				
 				showCadran = false;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = true;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPCameraV2")) as TPCameraV2).playerCanRotate = true;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = true;
 			}
 			
@@ -399,9 +402,15 @@ public class CrosshairLock : MonoBehaviour {
 		else if(isModifying == true)
 		{
 			
-			(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
+			(GameObject.FindObjectOfType(System.Type.GetType ("TPCameraV2")) as TPCameraV2).playerCanRotate = false;
 			(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreezeMovement();
 			
+		}
+		else
+		{
+			
+			(GameObject.FindObjectOfType(System.Type.GetType ("TPCameraV2")) as TPCameraV2).playerCanRotate = true;
+			(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreeMovement();
 		}
 		
 		
@@ -453,10 +462,7 @@ public class CrosshairLock : MonoBehaviour {
 	
 	void VarInitialize()
 	{
-		
-		xRayTarget = Screen.width/2;
-		yRayTarget = Screen.height/2;
-		
+	
 		isLocking = false;
 		showCadran = false;
 		translateXAvailable = true;
