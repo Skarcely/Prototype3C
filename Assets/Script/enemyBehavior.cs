@@ -39,6 +39,7 @@ public class enemyBehavior : MonoBehaviour {
 
 	void createSpawnPoint()
 	{
+		// Create a spawnPoint
 		Instantiate(startPoint, initPos, firstRotation);
 	}
 	
@@ -75,14 +76,15 @@ public class enemyBehavior : MonoBehaviour {
 			// enemy is chasing the player
 			// get the player position
 			this.transform.rotation = Quaternion.LookRotation(perso.transform.position - this.transform.position);
-			// move the enemyqz
+			// move the enemy
 			this.transform.Translate(Vector3.forward*speedEnemy*Time.deltaTime);		
 	}
 
 	void returnToPattern()
 	{
-		Debug.Log("Returning");
+		// target the spawnPoint
 		this.transform.rotation = Quaternion.LookRotation(firstPos - this.transform.position);
+		// move to SpawnPoint
 		this.transform.Translate(Vector3.forward*speedEnemy*Time.deltaTime);	
 	}
 	//Check Pattern lenght every frame
@@ -100,11 +102,13 @@ public class enemyBehavior : MonoBehaviour {
 
 	void testAggro()
 	{
+		// test from aggroZone script if aggro is triggered
 		if ((GameObject.FindObjectOfType(System.Type.GetType ("aggroZone")) as aggroZone).aggro == true)
 		{
 			chasePlayer();		
 		}
 
+		// player has moved away !
 		if (((GameObject.FindObjectOfType(System.Type.GetType ("aggroZone")) as aggroZone).aggro == false) && (hasAggro == true))
 		{
 			returnToPattern();
@@ -113,9 +117,9 @@ public class enemyBehavior : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
+		// check collision with spawnPoint to go back to main pattern
 		if ((collision.gameObject.tag == "spawnZone") && (hasAggro == true))
 		{
-			Debug.Log("Honey I'm Home !");
 			this.transform.rotation = firstRotation;
 			hasAggro = false;
 		}
