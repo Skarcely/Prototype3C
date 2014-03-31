@@ -1625,7 +1625,6 @@ GameObject:
   - 81: {fileID: 1409437011}
   - 114: {fileID: 1409437016}
   - 114: {fileID: 1409437017}
-  - 114: {fileID: 1409437018}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1729,45 +1728,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a858619bad0eb48ae0ae9aa9c3299c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crosshairNormal: {fileID: 2800000, guid: 0288c8d31b071494da77953be82de68c, type: 3}
-  crosshairLock: {fileID: 2800000, guid: 0e3faafdce65f554392c019cf1a366ce, type: 3}
-  cadran: {fileID: 2800000, guid: b6e5e9d8834141f4f8e6b5e0f7a69ee1, type: 3}
-  cadran_TranslateX_Normal: {fileID: 2800000, guid: f00456ae78141bb439c5e7de958e38fa,
-    type: 3}
-  cadran_TranslateX_Selected: {fileID: 2800000, guid: 560c7b0fa07c87c4e8cff20f29f49644,
-    type: 3}
-  cadran_TranslateY_Normal: {fileID: 2800000, guid: b351f0e3867ff8d40a3b78393815f2d2,
-    type: 3}
-  cadran_TranslateY_Selected: {fileID: 2800000, guid: b49ee0e5218406f409d6dccecd4b8215,
-    type: 3}
+  crosshairNormal: {fileID: 0}
+  crosshairLock: {fileID: 0}
+  cadran: {fileID: 0}
+  cadran2: {fileID: 0}
+  cadran_TranslateX_Normal: {fileID: 0}
+  cadran_TranslateX_Selected: {fileID: 0}
+  cadran_TranslateY_Normal: {fileID: 0}
+  cadran_TranslateY_Selected: {fileID: 0}
+  cadran_ScaleX_Normal: {fileID: 0}
+  cadran_ScaleX_Selected: {fileID: 0}
+  cadran_ScaleY_Normal: {fileID: 0}
+  cadran_ScaleY_Selected: {fileID: 0}
+  Lang1: {fileID: 0}
+  Lang2: {fileID: 0}
   isLocking: 0
   showCadran: 0
   isModifying: 0
   targetToModify: {fileID: 0}
   targetStorePosition: {x: 0, y: 0, z: 0}
---- !u!114 &1409437018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1409437010}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69955755fc129084c94a5ce0fcf10799, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1826810798}
-  smoothingTime: 10
-  pivotOffset: {x: .200000003, y: .699999988, z: 0}
-  camOffset: {x: 0, y: 1.20000005, z: -5}
-  closeOffset: {x: .349999994, y: 1.70000005, z: 0}
-  horizontalAimingSpeed: 800
-  verticalAimingSpeed: 800
-  maxVerticalAngle: 80
-  minVerticalAngle: -80
-  mouseSensitivity: .300000012
-  playerCanRotate: 0
-  playerIsRotatingCamera: 0
+  targetStoreScale: {x: 0, y: 0, z: 0}
 --- !u!1 &1412792461
 GameObject:
   m_ObjectHideFlags: 0
