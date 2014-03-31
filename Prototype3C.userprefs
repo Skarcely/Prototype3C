@@ -1,9 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\ReprogrammingStuff.cs">
     <Files>
       <File FileName="Assets\Script\CrosshairLock.cs" Line="206" Column="7" />
       <File FileName="Assets\Script\ReprogrammingStuff.cs" Line="24" Column="21" />
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\_old\ThirdPersonShooterGameCamera.cs">
+    <Files>
+      <File FileName="Assets\Script\_old\ThirdPersonShooterGameCamera.cs" Line="38" Column="20" />
+      <File FileName="Assets\Script\TPControllerV2.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\TPCamera.cs" Line="76" Column="34" />
+>>>>>>> 9b85f7694ff6d0e1f0b41d26aa1599e96485162e
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

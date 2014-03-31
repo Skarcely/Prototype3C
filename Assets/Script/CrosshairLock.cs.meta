@@ -2,7 +2,30 @@ fileFormatVersion: 2
 guid: 22a858619bad0eb48ae0ae9aa9c3299c
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - crosshairNormal: {fileID: 2800000, guid: 0288c8d31b071494da77953be82de68c, type: 3}
+  - crosshairLock: {fileID: 2800000, guid: 0e3faafdce65f554392c019cf1a366ce, type: 3}
+  - cadran: {fileID: 2800000, guid: b6e5e9d8834141f4f8e6b5e0f7a69ee1, type: 3}
+  - cadran2: {fileID: 2800000, guid: 7fa8111edf88eb846beace3c0a6c6ec5, type: 3}
+  - cadran_TranslateX_Normal: {fileID: 2800000, guid: f00456ae78141bb439c5e7de958e38fa,
+      type: 3}
+  - cadran_TranslateX_Selected: {fileID: 2800000, guid: 560c7b0fa07c87c4e8cff20f29f49644,
+      type: 3}
+  - cadran_TranslateY_Normal: {fileID: 2800000, guid: b351f0e3867ff8d40a3b78393815f2d2,
+      type: 3}
+  - cadran_TranslateY_Selected: {fileID: 2800000, guid: b49ee0e5218406f409d6dccecd4b8215,
+      type: 3}
+  - cadran_ScaleX_Normal: {fileID: 2800000, guid: 1528f9b8f5adfa940ae5e8c2c466e695,
+      type: 3}
+  - cadran_ScaleX_Selected: {fileID: 2800000, guid: 2e704681907d1ef4ea8c6cdd4e47ab83,
+      type: 3}
+  - cadran_ScaleY_Normal: {fileID: 2800000, guid: 54d5d5dd586de6041a6874b8b93d0971,
+      type: 3}
+  - cadran_ScaleY_Selected: {fileID: 2800000, guid: bad59ed8ec6ebe04d9458e6cac9743dc,
+      type: 3}
+  - Lang1: {fileID: 2800000, guid: 32e7148ad42a4d44c90ffc841e764f9a, type: 3}
+  - Lang2: {fileID: 2800000, guid: 012e2fed804d3d447908bffcd00b242b, type: 3}
+  - targetToModify: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
