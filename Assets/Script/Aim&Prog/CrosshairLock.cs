@@ -56,7 +56,6 @@ public class CrosshairLock : MonoBehaviour {
 	private int nbModes = 2; // Nombre de langages
 	private int cooldownCadran; // pour pas que l'appui sur le D-pad trigger le changement plusieurs fois
 	
-	
 	private RaycastHit hitTarget;
 	
 	[HideInInspector]
@@ -66,6 +65,8 @@ public class CrosshairLock : MonoBehaviour {
 	public Vector3 targetStorePosition;
 	[HideInInspector]
 	public Vector3 targetStoreScale;
+	
+	private Transform lastGameObjectLocked;
 		
 	// Use this for initialization
 	void Start () 
@@ -84,6 +85,13 @@ public class CrosshairLock : MonoBehaviour {
 		//Raycast
 		rayCamToTarget = camera.ScreenPointToRay(new Vector3(xRayTarget,yRayTarget));
 		
+		
+		if(lastGameObjectLocked && lastGameObjectLocked != hitTarget.transform)
+		{
+			lastGameObjectLocked.transform.GetChild(0).light.enabled = false;	
+			
+		}
+		
 		//Check hit Method
 		CheckRayHit();
 		
@@ -97,13 +105,13 @@ public class CrosshairLock : MonoBehaviour {
 		// Affiche le crosshair de base
 		if(isLocking == false )
 		{
-			GUI.DrawTexture(new Rect( Screen.width/2 - 16, Screen.height/2 - 16 , 32,32), crosshairNormal);
+//			GUI.DrawTexture(new Rect( Screen.width/2 - 16, Screen.height/2 - 16 , 32,32), crosshairNormal);
 		}
 		
 		//Si passe sur un cube
 		if(isLocking == true && showCadran == false)
 		{
-			GUI.DrawTexture(new Rect(Screen.width/2 - 16, Screen.height/2 - 16, 32,32), crosshairLock);	
+//			GUI.DrawTexture(new Rect(Screen.width/2 - 16, Screen.height/2 - 16, 32,32), crosshairLock);	
 		}
 		
 		//Si Appuie sur LT
@@ -214,21 +222,22 @@ public class CrosshairLock : MonoBehaviour {
 	
 	void CheckRayHit()
 	{
-		
-		
 		if(Physics.Raycast(rayCamToTarget, out hitTarget) == true)
 		{
 			if(hitTarget.transform.gameObject.tag == "Cube")
 			{
 				isLocking = true;
+				
+				hitTarget.transform.GetChild(0).light.enabled = true;
+				
+				lastGameObjectLocked = hitTarget.transform;
 			}
 			else{
 				isLocking = false;	
 			}
 		}
-		
 	}
-	
+		
 	void CheckInputs()
 	{
 		
@@ -401,7 +410,6 @@ public class CrosshairLock : MonoBehaviour {
 		
 		else if(isModifying == true)
 		{
-			
 			(GameObject.FindObjectOfType(System.Type.GetType ("TPCameraV2")) as TPCameraV2).playerCanRotate = false;
 			(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreezeMovement();
 			

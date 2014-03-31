@@ -34,6 +34,8 @@ public class ReprogrammingStuff : MonoBehaviour {
 	private bool scaleYMax = false;
 	private bool scaleYMin = false;
 	
+	private float lightRange;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -71,6 +73,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 	public void Translate(GameObject target, int TranslateDirection )
 	{
+		target.transform.GetChild(0).light.color = Color.blue;
 		
 		if( TranslateDirection == 0) // Si Translate X
 		{	
@@ -121,6 +124,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 	public void Scale(GameObject target, int ScaleDirection )
 	{		
+		target.transform.GetChild(0).light.color = Color.blue;
 		
 		if(ScaleDirection == 0) // Si Scale X
 		{	
@@ -172,6 +176,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 		{
 			if(Input.GetButton ("A_1"))
 			{
+				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.GetChild(0).light.color = Color.white;
 				isTranslatingX = false;
 				isTranslatingY = false;
 				isScalingX = false;

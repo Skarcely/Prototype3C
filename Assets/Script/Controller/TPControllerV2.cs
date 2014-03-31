@@ -174,10 +174,7 @@ public class TPControllerV2 : MonoBehaviour {
 				
 				if(hitTarget.transform.tag == "Cube")
 				{
-					
-					
-					isGrabbing = true;
-					
+					isGrabbing = true;	
 				}
 				else
 				{
