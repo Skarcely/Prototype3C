@@ -50,6 +50,7 @@ public class CrosshairLock : MonoBehaviour {
 	
 	private int activeMode = 0; // Langage actif
 	private int nbModes = 2; // Nombre de langages possedes
+	private int cooldownCadran; // pour pas que l'appui sur le D-pad trigger le changement plusieurs fois
 	
 	private RaycastHit hitTarget;
 	
@@ -57,6 +58,16 @@ public class CrosshairLock : MonoBehaviour {
 	public GameObject targetToModify;
 	[HideInInspector]
 	public Vector3 targetStorePosition;
+	[HideInInspector]
+	public Vector3 targetStoreScale;
+	
+	/* [HideInInspector]
+	public var arrPos = new Array();
+	
+	[HideInInspector]
+	public var arrSca = new Array(); */
+	
+	
 	
 	// Use this for initialization
 	void Start () 
@@ -210,60 +221,35 @@ public class CrosshairLock : MonoBehaviour {
 		
 		// Si on vise un cube
 		if(isLocking == true )
-		{
+		{			
 			
-			if( Input.GetAxis("TriggersL_1") >= 0.9)
+			if(Input.GetAxis("TriggersL_1") >= 0.9)
 			{
 								
 				showCadran = true;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = false;
 				
 				
 				//Si le joystick droit est entre 0 et -x et 0 et -y 
-				if( translateXAvailable && ((Input.GetAxis("R_XAxis_1") <= -0.1) && (Input.GetAxis("R_YAxis_1") <= -0.1)) ){
+				if( translateXAvailable && ((Input.GetAxis("R_XAxis_1") <= -0.1) && (Input.GetAxis("R_YAxis_1") <= -0.1)) )
+				{
 				
-					//Juste visuel
+					//Juste visuel (plus maintenant)
 					translateXActivated = true;
+					scaleXActivated = false;
+					scaleYActivated = false;
+					translateYActivated = false;
 					
-					
-					/*
-					//Si le joueur sélectionn translate X
-					if(Input.GetButton("RB_1"))
-					{
-						
-						showCadran = false;
-						isModifying = true;						
-						//translateXActivated = true;
-						
-						targetToModify = hitTarget.transform.gameObject;
-						targetStorePosition = targetToModify.transform.position;
-						// Debug.Log(targetToModify.tag);
-						
-						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
-
-					} */
 				
 				}
 				else if( ((Input.GetAxis ("R_XAxis_1") >= 0.1 && Input.GetAxis ("R_XAxis_1") >= -0.1 )) && translateYAvailable)
 				{
 					translateYActivated = true;
-					
-					/*
-					//Si le joueur sélectionne translate Y
-					if(Input.GetButton("RB_1"))
-					{
-						
-						showCadran = false;
-						isModifying = true;						
-						
-						targetToModify = hitTarget.transform.gameObject;
-						targetStorePosition = targetToModify.transform.position;
-						
-						(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
-
-					} */
+					scaleXActivated = false;
+					scaleYActivated = false;
+					translateXActivated = false;
 					
 					
 				}
@@ -271,8 +257,10 @@ public class CrosshairLock : MonoBehaviour {
 				else if( scaleXAvailable && ((Input.GetAxis("R_XAxis_1") <= -0.1) && (Input.GetAxis("R_YAxis_1") <= -0.1)) )
 				{
 				
-					//Juste visuel
 					scaleXActivated = true;
+					scaleYActivated = false;
+					translateXActivated = false;
+					translateYActivated = false;
 					
 				
 				} 
@@ -280,7 +268,9 @@ public class CrosshairLock : MonoBehaviour {
 				else if( ((Input.GetAxis ("R_XAxis_1") >= 0.1 && Input.GetAxis ("R_XAxis_1") >= -0.1 )) && scaleYAvailable)
 				{
 					scaleYActivated = true;
-					
+					scaleXActivated = false;
+					translateXActivated = false;
+					translateYActivated = false;
 					
 				}
 				
@@ -298,7 +288,7 @@ public class CrosshairLock : MonoBehaviour {
  				
 			}
 			
-			// ajoute par Elias : si le bouton est lache sur translateX ou translateY, on lance la modification. A terme on va avoir un "else if"
+			// Si le bouton est lache sur translateX ou translateY, on lance la modification. A terme on va avoir un "else if"
 			// pour chaque action possible, pas tres propre :s
 			
 			else if(translateXActivated)
@@ -310,9 +300,14 @@ public class CrosshairLock : MonoBehaviour {
 						
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
+				targetStoreScale = targetToModify.transform.localScale;
 				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
+				
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingX = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingY = false;
 			}
 			
 			
@@ -324,9 +319,14 @@ public class CrosshairLock : MonoBehaviour {
 						
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
+				targetStoreScale = targetToModify.transform.localScale;
 				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
+				
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingX = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingY = false;
 			}
 			
 			else if(scaleXActivated)
@@ -338,9 +338,14 @@ public class CrosshairLock : MonoBehaviour {
 						
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
+				targetStoreScale = targetToModify.transform.localScale;
 				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingX = true;
+				
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingY = false;
 			}
 			
 			else if(scaleYActivated)
@@ -351,18 +356,23 @@ public class CrosshairLock : MonoBehaviour {
 						
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
+				targetStoreScale = targetToModify.transform.localScale;
 				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingY = true;
+				
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingX = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = false;
 			}
 			
 			
-			else if( isModifying == true)
+			else if(isModifying == true)
 			{
 				showCadran = false;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = false;
 			}
 			
 			
@@ -371,8 +381,8 @@ public class CrosshairLock : MonoBehaviour {
 				
 				showCadran = false;
 				
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = true;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).canMove = true;
+				(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = true;
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).canMove = true;
 			}
 			
 		}
@@ -380,38 +390,56 @@ public class CrosshairLock : MonoBehaviour {
 		else if(isModifying == true)
 		{
 			
-			(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
-			(GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).FreezeMovement();
+			(GameObject.FindObjectOfType(System.Type.GetType ("ThirdPersonShooterGameCamera")) as ThirdPersonShooterGameCamera).playerCanRotate = false;
+			(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreezeMovement();
 			
 		}
+		
+		
+		
+		
 		
 		
 		// Changement de cadran
-		if(showCadran && Input.GetAxis ("DPad_YAxis_1") >= 0.5)
+		if (cooldownCadran >= 15)
 		{
-			Debug.Log("chgt cadran");
-			
-			activeMode +=1;
-			
-			if (activeMode == nbModes)
+				
+				
+			if(showCadran && Input.GetAxis ("DPad_YAxis_1") >= 0.5)
 			{
-				activeMode = 0;
+				Debug.Log("chgt cadran");
+				
+				activeMode +=1;
+				
+				if (activeMode == nbModes)
+				{
+					activeMode = 0;
+				}
+				cooldownCadran = 0;
+			}
+			else if(showCadran && Input.GetAxis ("DPad_YAxis_1") <= -0.5)
+			{
+				Debug.Log("chgt cadran");
+				
+				activeMode -=1;
+				
+				if (activeMode < 0)
+				{
+					activeMode = nbModes;
+				}
+				cooldownCadran = 0;
 			}
 		}
-		else if(showCadran && Input.GetAxis ("DPad_YAxis_1") <= -0.5)
+		else
 		{
-			Debug.Log("chgt cadran");
-			
-			activeMode -=1;
-			
-			if (activeMode < 0)
-			{
-				activeMode = nbModes;
-			}
+			cooldownCadran +=1;
 		}
 		
 	
 	}
+	
+	
+	
 	
 	
 	void VarInitialize()
@@ -425,6 +453,14 @@ public class CrosshairLock : MonoBehaviour {
 		translateXAvailable = true;
 		translateXActivated = false;
 		translateYAvailable = true;
+		translateYActivated = false;
+		
+		scaleXAvailable = false;
+		scaleXActivated = false;
+		scaleYAvailable = false;
+		scaleYActivated = false;
+		
+		cooldownCadran = 15;
 			
 	}
 	

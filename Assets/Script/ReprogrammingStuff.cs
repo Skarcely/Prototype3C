@@ -58,9 +58,8 @@ public class ReprogrammingStuff : MonoBehaviour {
 		
 	}
 	
-	public void Translate(GameObject target, int TranslateDirection ){
-		
-		
+	public void Translate(GameObject target, int TranslateDirection )
+	{
 		
 		if( TranslateDirection == 0) // Si Translate X
 		{	
@@ -108,11 +107,10 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 	// Scale
 	
-	public void Scale(GameObject target, int ScaleDirection ){
+	public void Scale(GameObject target, int ScaleDirection )
+	{		
 		
-		
-		
-		if( ScaleDirection == 0) // Si Scale X
+		if(ScaleDirection == 0) // Si Scale X
 		{	
 			isTranslatingY = false;
 			isTranslatingX = false;
@@ -126,29 +124,29 @@ public class ReprogrammingStuff : MonoBehaviour {
 			else if(Input.GetAxis ("L_XAxis_1")<= -0.1)
 			{
 			
-				translateVector = new Vector3(-scaleStep, 0,0);
+				scaleVector = new Vector3(-scaleStep, 0,0);
 				target.transform.localScale += (scaleVector*Time.deltaTime*translateSpeed);
 				
 			}
 			
 		}
 		
-		if( ScaleDirection == 0) // Si Scale Y
+		if( ScaleDirection == 1) // Si Scale Y
 		{	
 			isTranslatingY = false;
 			isTranslatingX = false;
 			isScalingX= false;
 			
-			if(Input.GetAxis("L_XAxis_1") >= 0.1)
+			if(Input.GetAxis("L_YAxis_1") >= 0.1)
 			{
 				scaleVector = new Vector3(0, scaleStep,0);
 				target.transform.localScale += (scaleVector*Time.deltaTime*scaleSpeed);
 			}
-			else if(Input.GetAxis ("L_XAxis_1")<= -0.1)
+			else if(Input.GetAxis ("L_YAxis_1")<= -0.1)
 			{
 			
-				translateVector = new Vector3(0, -scaleStep,0);
-				target.transform.localScale += (scaleVector*Time.deltaTime*translateSpeed);
+				scaleVector = new Vector3(0, -scaleStep,0);
+				target.transform.localScale += (scaleVector*Time.deltaTime*scaleSpeed);
 				
 			}
 			
@@ -158,7 +156,8 @@ public class ReprogrammingStuff : MonoBehaviour {
 	
 	private void CheckValidation()
 	{
-		if(isTranslatingX || isTranslatingY || isScalingX || isScalingY){
+		if(isTranslatingX || isTranslatingY || isScalingX || isScalingY)
+		{
 			if(Input.GetButton ("A_1"))
 			{
 				isTranslatingX = false;
@@ -167,7 +166,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 				isScalingY = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
 				(GameObject.FindObjectOfType(System.Type.GetType ("TPCamera")) as TPCamera).playerCanRotate = false;
-				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPControllerV2).FreeMovement();
+				(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
 			}
 			
 			if(Input.GetButton ("B_1"))
@@ -183,8 +182,11 @@ public class ReprogrammingStuff : MonoBehaviour {
 	{
 		
 		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.position = (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetStorePosition;
+		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.localScale = (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetStoreScale;
 		isTranslatingX = false;
 		isTranslatingY = false;
+		isScalingX = false;
+		isScalingY = false;
 		(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
 		(GameObject.FindObjectOfType(System.Type.GetType ("TPController")) as TPController).FreeMovement();
 	}
