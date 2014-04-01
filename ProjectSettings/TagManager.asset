@@ -6,6 +6,8 @@ TagManager:
   - GrabZone
   - Cube
   - Ground
+  - enemy
+  - spawnZone
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
