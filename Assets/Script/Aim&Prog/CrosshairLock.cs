@@ -228,7 +228,11 @@ public class CrosshairLock : MonoBehaviour {
 			{
 				isLocking = true;
 				
-				hitTarget.transform.GetChild(0).light.enabled = true;
+				if((GameObject.FindObjectOfType(System.Type.GetType ("CheckGlitch")) as CheckGlitch).isInFrame)
+				{
+					hitTarget.transform.GetChild(0).light.enabled = true;
+				}
+				
 				
 				lastGameObjectLocked = hitTarget.transform;
 			}

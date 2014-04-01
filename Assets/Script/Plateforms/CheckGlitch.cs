@@ -4,7 +4,8 @@ using System.Collections;
 public class CheckGlitch : MonoBehaviour {
 
 	//Private
-	private bool isInFrame;
+	[HideInInspector]
+	public bool isInFrame;
 	private Vector3 thisPosition;
 	private float randomWait;
 	private bool playerIsModifying;
@@ -14,6 +15,8 @@ public class CheckGlitch : MonoBehaviour {
 	public Camera refCam;
 	public float marginRL = 0.3f;
 	public float marginHB = 0.3f;
+	public float distanceZ = 20.0f;
+	
 	public Material glitchMat;
 	public Material normalMat;
 	public float deltaGlitch = 1.0f;
@@ -27,6 +30,7 @@ public class CheckGlitch : MonoBehaviour {
 	void Update () {
 		
 		thisPosition = refCam.WorldToViewportPoint(this.transform.position);
+//		Debug.Log (thisPosition);
 		CheckInViewPort();
 		
 		playerIsModifying = (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying;
@@ -50,7 +54,7 @@ public class CheckGlitch : MonoBehaviour {
 	void CheckInViewPort()
 	{
 	
-		if( (thisPosition.x >= marginRL && thisPosition.x <= 1 - marginRL) && (thisPosition.y <= 1 - marginHB && thisPosition.y >= marginHB))
+		if( (thisPosition.x >= marginRL && thisPosition.x <= 1 - marginRL) && (thisPosition.y <= 1 - marginHB && thisPosition.y >= marginHB) && (thisPosition.z <= distanceZ))
 		{
 			isInFrame = true;
 		}
