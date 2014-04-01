@@ -1069,6 +1069,7 @@ MonoBehaviour:
   paternMax: 10
   perso: {fileID: 1305459388}
   startPoint: {fileID: 100000, guid: e2f9500061c2b574883f952035815d90, type: 2}
+  deathScreen: {fileID: 100000, guid: 659a769a1353dbb4cb49aadee9a75c80, type: 2}
 --- !u!1 &508838568
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,6 +1348,10 @@ Prefab:
       propertyPath: paternMax
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 5c68769522102e94ea04757be486d885, type: 2}
+      propertyPath: deathScreen
+      value: 
+      objectReference: {fileID: 100000, guid: 659a769a1353dbb4cb49aadee9a75c80, type: 2}
     m_RemovedComponents:
     - {fileID: 6500000, guid: 5c68769522102e94ea04757be486d885, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 5c68769522102e94ea04757be486d885, type: 2}
@@ -3296,6 +3301,7 @@ GameObject:
   - 114: {fileID: 1409437016}
   - 114: {fileID: 1409437017}
   - 114: {fileID: 1409437018}
+  - 114: {fileID: 1409437019}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3420,7 +3426,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1409437010}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69955755fc129084c94a5ce0fcf10799, type: 3}
   m_Name: 
@@ -3437,6 +3443,19 @@ MonoBehaviour:
   mouseSensitivity: .300000012
   playerCanRotate: 0
   playerIsRotatingCamera: 0
+--- !u!114 &1409437019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1409437010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad0e4fb9dcdd8c4383915e89372b2da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screen: {fileID: 2800000, guid: 932be0ccc5b26e140a08b751d783a027, type: 3}
+  Dead: 0
 --- !u!1 &1436231413
 GameObject:
   m_ObjectHideFlags: 0

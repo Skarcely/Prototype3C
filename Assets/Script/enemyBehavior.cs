@@ -8,6 +8,7 @@ public class enemyBehavior : MonoBehaviour {
 	public int paternMax;
 	public GameObject perso;
 	public GameObject startPoint;
+	public GameObject deathScreen;
 
 	//Private
 	private Vector3 pos;
@@ -122,6 +123,11 @@ public class enemyBehavior : MonoBehaviour {
 		{
 			this.transform.rotation = firstRotation;
 			hasAggro = false;
+		}
+
+		if (collision.gameObject.tag == "Player")
+		{
+			(GameObject.FindObjectOfType(System.Type.GetType ("gameOver")) as gameOver).Dead = true;
 		}
 	}
 }
