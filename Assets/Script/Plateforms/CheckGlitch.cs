@@ -7,12 +7,13 @@ public class CheckGlitch : MonoBehaviour {
 	private bool isInFrame;
 	private Vector3 thisPosition;
 	private float randomWait;
+	private bool playerIsModifying;
 	
 	
 	//Public
 	public Camera refCam;
-	public float marginRL = 0.1f;
-	public float marginHB = 0.1f;
+	public float marginRL = 0.3f;
+	public float marginHB = 0.3f;
 	public Material glitchMat;
 	public Material normalMat;
 	public float deltaGlitch = 1.0f;
@@ -24,14 +25,26 @@ public class CheckGlitch : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		thisPosition = refCam.WorldToViewportPoint(this.transform.position);
 		CheckInViewPort();
 		
-		if(isInFrame)
+		playerIsModifying = (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying;
+		
+		if(playerIsModifying)
 		{
-			Debug.Log ("Is in Frame");
+			ResetMat();
+		}
+		else if(isInFrame)
+		{
+//			Debug.Log ("Is in Frame");
 			GlitchTexture();	
 		}
+		else
+		{
+			ResetMat();
+		}
+		
 	}
 	
 	void CheckInViewPort()
@@ -50,23 +63,22 @@ public class CheckGlitch : MonoBehaviour {
 	
 	void GlitchTexture()
 	{
-//		Debug.Log("Passe dans GlitchTexture");
-		this.transform.gameObject.renderer.material = glitchMat;
-		Debug.Log ("Before wait = " + this.transform.gameObject.renderer.material);
 		
 		randomWait = Random.Range(0,5) * deltaGlitch;
-		
-		StartCoroutine(WaitRandom(randomWait));
-		this.transform.gameObject.renderer.material = normalMat;
-		Debug.Log ("Before wait = " + this.transform.gameObject.renderer.material);
-		
+		StartCoroutine("WaitRandom" ,randomWait);
 	}
 	
 	IEnumerator WaitRandom(float randomTimer)
 	{
-//		Debug.Log("Passe dans WaitRandom");
-		Debug.Log(randomTimer);
+		this.transform.gameObject.renderer.material = normalMat;
 		yield return new WaitForSeconds(randomTimer);
+		this.transform.gameObject.renderer.material = glitchMat;
+	}
+	
+	
+	void ResetMat(){
+		StopCoroutine("WaitRandom");
+		this.transform.gameObject.renderer.material = normalMat;
 	}
 	
 }
