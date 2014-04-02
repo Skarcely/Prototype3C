@@ -52,7 +52,6 @@ public class CrosshairLock : MonoBehaviour {
 	private bool scaleYAvailable;
 	private bool scaleYActivated;
 	
-	
 	private int activeMode = 0; // Langage actif
 	private int nbModes = 2; // Nombre de langages
 	private int cooldownCadran; // pour pas que l'appui sur le D-pad trigger le changement plusieurs fois
@@ -67,7 +66,8 @@ public class CrosshairLock : MonoBehaviour {
 	[HideInInspector]
 	public Vector3 targetStoreScale;
 	
-	private Transform lastGameObjectLocked;
+	[HideInInspector]
+	public Transform lastGameObjectLocked;
 		
 	// Use this for initialization
 	void Start () 
@@ -108,7 +108,7 @@ public class CrosshairLock : MonoBehaviour {
 	void OnGUI () 
 	{
 		// Affiche le crosshair de base
-		if( isLocking == false )
+		if( isLocking == false & Time.timeScale !=0 )
 		{
 			GUI.DrawTexture(new Rect( Screen.width/2 - 16, Screen.height/2 - 16 , 32,32), crosshairNormal);
 		}
@@ -152,24 +152,17 @@ public class CrosshairLock : MonoBehaviour {
 				scaleYAvailable = true;
 			}
 			
-			
-			
-			
 			#region Translate X
 			//Si le translate X est dispo
 			if(translateXAvailable == true)
 			{
-				
 				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateX_Normal);
-				
 			}
 			
 			//Si le joystick droit pointe sur translateX
 			if(translateXActivated == true)
 			{
-			
 				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateX_Selected);
-				
 			}
 			#endregion
 			
@@ -177,43 +170,31 @@ public class CrosshairLock : MonoBehaviour {
 			
 			if(translateYAvailable == true)
 			{
-				
 				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Normal);
-				
 			}
 			if(translateYActivated == true)
 			{
-			
 				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_TranslateY_Selected);
-				
 			}
 			
 			//Si le scale X est dispo
 			if(scaleXAvailable == true)
 			{
-				
 				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleX_Normal);
-				
 			}
 			if(scaleXActivated == true)
 			{
-				
 				GUI.DrawTexture(new Rect(Screen.width/2 - (cadran.width/2), Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleX_Selected);
-				
 			}
 			
 			// Si le scale Y est dispo
 			if(scaleYAvailable == true)
-			{
-				
-				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleY_Normal);
-				
+			{	
+				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleY_Normal);				
 			}
 			if(scaleYActivated == true)
-			{
-				
-				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleY_Selected);
-				
+			{				
+				GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2 - (cadran.height/2), 128,128), cadran_ScaleY_Selected);				
 			}
 			
 			
@@ -238,7 +219,6 @@ public class CrosshairLock : MonoBehaviour {
 					hitTarget.transform.GetChild(0).light.enabled = true;
 				}
 				
-				
 				lastGameObjectLocked = hitTarget.transform;
 			}
 			else{
@@ -251,10 +231,10 @@ public class CrosshairLock : MonoBehaviour {
 	{
 
 //		// Si on vise un cube
-		if(isLocking == true)
+		if(isLocking == true && (GameObject.FindObjectOfType(System.Type.GetType ("TPControllerV2")) as TPControllerV2).isAiming == true)
 		{			
 			
-			if(Input.GetAxis("TriggersR_1") >= 0.9)
+			if(Input.GetAxis("TriggersR_1") >= 0.9 && Time.timeScale !=0)
 			{
 								
 				showCadran = true;
@@ -321,7 +301,6 @@ public class CrosshairLock : MonoBehaviour {
 			
 			// Si le bouton est lache sur translateX ou translateY, on lance la modification. A terme on va avoir un "else if"
 			// pour chaque action possible, pas tres propre :s
-			
 			else if(translateXActivated)
 			{
 				

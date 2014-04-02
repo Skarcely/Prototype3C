@@ -21,6 +21,9 @@ public Transform player;
 	public float maxVerticalAngle = 80f;
 	public float minVerticalAngle = -80f;
 	
+	public float aimMaxVerticalAngle = 80f;
+	public float aimMinVerticalAngle = -80f;
+	
 	public float mouseSensitivity = 0.3f;
 		
 	private float angleH = 0;
@@ -45,6 +48,19 @@ public Transform player;
 	void Start () 
 	{
 		VarInitialize();	
+	}
+	
+	void Update()
+	{
+		if(PlayerPrefs.GetInt("Visee")==0)
+		{
+			viseeNormal = true;
+		}
+		else
+		{
+			viseeNormal = false;	
+		}	
+		
 	}
 	
 	// Update is called once per frame
@@ -78,11 +94,10 @@ public Transform player;
 		if( playerCanRotate == true)	
 		{
 			CheckRightStickInput();
-			
 		}
 		
 		//Si on est en train de modifier un objet : l'Objet devient la target de la caméra
-		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
+		if( ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)  )
 		{
 			cam.LookAt((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform);
 			
@@ -90,8 +105,16 @@ public Transform player;
 		// Sinon, on calcule la position de la cam
 		else
 		{
-			//Y ne peut pas dépasser un min et un max définis dans l'inspector
-			angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
+			if((GameObject.FindObjectOfType(System.Type.GetType("TPControllerV2")) as TPControllerV2).isAiming == false)
+			{
+				//Y ne peut pas dépasser un min et un max définis dans l'inspector
+				angleV = Mathf.Clamp(angleV, minVerticalAngle, maxVerticalAngle);
+			}
+			else
+			{
+				//Y ne peut pas dépasser un min et un max définis dans l'inspector
+				angleV = Mathf.Clamp(angleV, aimMinVerticalAngle, aimMaxVerticalAngle);
+			}
 			
 			// Before changing camera, store the prev aiming distance.
 			// If we're aiming at nothing (the sky), we'll keep this distance.
@@ -168,15 +191,6 @@ public Transform player;
 	
 	void VarInitialize()
 	{
-	
-		if(PlayerPrefs.GetInt("Visee")==0)
-		{
-			viseeNormal = true;
-		}
-		else
-		{
-			viseeNormal = false;	
-		}
 		
 		storedPivotOffset = pivotOffset;
 		storedCamOffset = camOffset;

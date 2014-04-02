@@ -46,9 +46,7 @@ public class ReprogrammingStuff : MonoBehaviour {
 		
 		
 		LimitManager();
-		
-//		Debug.Log (translateXMax);
-		
+
 		if(isTranslatingX)
 		{
 			Translate ((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify, 0);

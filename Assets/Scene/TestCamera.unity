@@ -1678,6 +1678,7 @@ GameObject:
   - 114: {fileID: 1384981453}
   - 114: {fileID: 1384981452}
   - 114: {fileID: 1384981451}
+  - 114: {fileID: 1384981459}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1708,6 +1709,8 @@ MonoBehaviour:
   verticalAimingSpeed: 200
   maxVerticalAngle: 10
   minVerticalAngle: -50
+  aimMaxVerticalAngle: 60
+  aimMinVerticalAngle: -60
   mouseSensitivity: .300000012
   playerCanRotate: 0
   playerIsRotatingCamera: 0
@@ -1769,6 +1772,7 @@ MonoBehaviour:
   targetToModify: {fileID: 0}
   targetStorePosition: {x: 0, y: 0, z: 0}
   targetStoreScale: {x: 0, y: 0, z: 0}
+  lastGameObjectLocked: {fileID: 0}
 --- !u!81 &1384981454
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1829,6 +1833,19 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &1384981459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1384981450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01edbabfbce02d8429546dbe2bad6f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPausing: 0
+  pauseText: {fileID: 0}
 --- !u!1 &1402235049
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,9 +2071,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInFrame: 0
   refCam: {fileID: 1384981457}
-  marginRL: .200000003
-  marginHB: .200000003
+  marginRL: 0
+  marginHB: 0
   distanceZ: 20
+  aimMarginRL: 0
+  aimMarginHB: 0
+  aimDistanceZ: 16
   glitchMat: {fileID: 2100000, guid: 6912aedb59ced814293ab7eb53297656, type: 2}
   normalMat: {fileID: 2100000, guid: 90834673b499463468b1847c631366b0, type: 2}
   deltaGlitch: 1

@@ -17,6 +17,10 @@ public class CheckGlitch : MonoBehaviour {
 	public float marginHB = 0.3f;
 	public float distanceZ = 20.0f;
 	
+	public float aimMarginRL = 0.05f;
+	public float aimMarginHB = 0.05f;
+	public float aimDistanceZ = 15.0f;
+	
 	public Material glitchMat;
 	public Material normalMat;
 	public float deltaGlitch = 1.0f;
@@ -39,7 +43,7 @@ public class CheckGlitch : MonoBehaviour {
 		{
 			ResetMat();
 		}
-		else if(isInFrame)
+		else if(isInFrame && (GameObject.FindObjectOfType(System.Type.GetType ("PauseMenu")) as PauseMenu).isPausing == false )
 		{
 //			Debug.Log ("Is in Frame");
 			GlitchTexture();	
@@ -54,13 +58,28 @@ public class CheckGlitch : MonoBehaviour {
 	void CheckInViewPort()
 	{
 	
-		if( (thisPosition.x >= marginRL && thisPosition.x <= 1 - marginRL) && (thisPosition.y <= 1 - marginHB && thisPosition.y >= marginHB) && (thisPosition.z <= distanceZ))
+		if((GameObject.FindObjectOfType(System.Type.GetType("TPControllerV2")) as TPControllerV2).isAiming == false)
 		{
-			isInFrame = true;
+			if( (thisPosition.x >= marginRL && thisPosition.x <= 1 - marginRL) && (thisPosition.y <= 1 - marginHB && thisPosition.y >= marginHB) && (thisPosition.z <= distanceZ))
+			{
+				isInFrame = true;
+			}
+			else
+			{
+				isInFrame = false;	
+			}
 		}
-		else
+		
+		if((GameObject.FindObjectOfType(System.Type.GetType("TPControllerV2")) as TPControllerV2).isAiming == true)
 		{
-			isInFrame = false;	
+			if( (thisPosition.x >= aimMarginRL && thisPosition.x <= 1 - aimMarginRL) && (thisPosition.y <= 1 - aimMarginHB && thisPosition.y >= aimMarginHB) && (thisPosition.z <= aimDistanceZ))
+			{
+				isInFrame = true;
+			}
+			else
+			{
+				isInFrame = false;	
+			}
 		}
 		
 	}
@@ -68,7 +87,8 @@ public class CheckGlitch : MonoBehaviour {
 	void GlitchTexture()
 	{
 		
-		randomWait = Random.Range(0,5) * deltaGlitch;
+		randomWait = Random.Range(0,20) * deltaGlitch;
+//		Debug.Log (randomWait);
 		StartCoroutine("WaitRandom" ,randomWait);
 	}
 	

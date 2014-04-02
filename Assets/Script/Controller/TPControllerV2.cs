@@ -124,19 +124,34 @@ public class TPControllerV2 : MonoBehaviour {
 		XControllerAxis = Input.GetAxis("L_XAxis_1");
 		YControllerAxis = Input.GetAxis("L_YAxis_1");			
 		stickDirection = new Vector3(-XControllerAxis, 0 , YControllerAxis);
-		
+
 		if(Input.GetAxis("TriggersL_1") >= 0.9)
 		{
 			isAiming = true;
 		}
-		else if(playerIsReprogramming == false)
+		else
 		{
-			if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify)
+			
+			(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = false;
+			(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = false;
+			(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingX = false;
+			(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingY = false;
+			
+			if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).lastGameObjectLocked)
 			{
-				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.GetChild(0).light.enabled = false;
+				 (GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).lastGameObjectLocked.transform.GetChild(0).light.enabled = false;
 			}
 			
-			isAiming = false;	
+			if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify)
+			{
+				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.GetChild(0).light.color = Color.white;
+			}
+			
+			(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying = false;
+			
+
+			
+			isAiming = false;
 		}
 	}
 		
