@@ -5,6 +5,7 @@ public class CrosshairLock : MonoBehaviour {
 	
 	
 	//Public
+
 	public Texture2D crosshairNormal;
 	public Texture2D crosshairLock;
 	public Texture2D cadran;
@@ -79,6 +80,10 @@ public class CrosshairLock : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		
+//		Debug.Log ("isLocking : " +isLocking );
+//		Debug.Log ("isModifying : " +isModifying );
+		
 		xRayTarget = Screen.width/2;
 		yRayTarget = Screen.height/2;
 		
@@ -103,18 +108,18 @@ public class CrosshairLock : MonoBehaviour {
 	void OnGUI () 
 	{
 		// Affiche le crosshair de base
-		if(isLocking == false )
+		if( isLocking == false )
 		{
-//			GUI.DrawTexture(new Rect( Screen.width/2 - 16, Screen.height/2 - 16 , 32,32), crosshairNormal);
+			GUI.DrawTexture(new Rect( Screen.width/2 - 16, Screen.height/2 - 16 , 32,32), crosshairNormal);
 		}
 		
 		//Si passe sur un cube
 		if(isLocking == true && showCadran == false)
 		{
-//			GUI.DrawTexture(new Rect(Screen.width/2 - 16, Screen.height/2 - 16, 32,32), crosshairLock);	
+			GUI.DrawTexture(new Rect(Screen.width/2 - 16, Screen.height/2 - 16, 32,32), crosshairLock);	
 		}
 		
-		//Si Appuie sur LT
+		//Si Appuie sur RT
 		if(showCadran == true)
 		{
 			
@@ -228,7 +233,7 @@ public class CrosshairLock : MonoBehaviour {
 			{
 				isLocking = true;
 				
-				if((GameObject.FindObjectOfType(System.Type.GetType ("CheckGlitch")) as CheckGlitch).isInFrame)
+				if((GameObject.FindObjectOfType(System.Type.GetType ("CheckGlitch")) as CheckGlitch).isInFrame == true)
 				{
 					hitTarget.transform.GetChild(0).light.enabled = true;
 				}
@@ -244,12 +249,12 @@ public class CrosshairLock : MonoBehaviour {
 		
 	void CheckInputs()
 	{
-		
-		// Si on vise un cube
-		if(isLocking == true )
+
+//		// Si on vise un cube
+		if(isLocking == true)
 		{			
 			
-			if(Input.GetAxis("TriggersL_1") >= 0.9)
+			if(Input.GetAxis("TriggersR_1") >= 0.9)
 			{
 								
 				showCadran = true;
@@ -327,7 +332,6 @@ public class CrosshairLock : MonoBehaviour {
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
 				targetStoreScale = targetToModify.transform.localScale;
-				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingX = true;
 				
@@ -346,7 +350,6 @@ public class CrosshairLock : MonoBehaviour {
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
 				targetStoreScale = targetToModify.transform.localScale;
-				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isTranslatingY = true;
 				
@@ -365,7 +368,6 @@ public class CrosshairLock : MonoBehaviour {
 				targetToModify = hitTarget.transform.gameObject;
 				targetStorePosition = targetToModify.transform.position;
 				targetStoreScale = targetToModify.transform.localScale;
-				// Debug.Log(targetToModify.tag);
 						
 				(GameObject.FindObjectOfType(System.Type.GetType ("ReprogrammingStuff")) as ReprogrammingStuff).isScalingX = true;
 				

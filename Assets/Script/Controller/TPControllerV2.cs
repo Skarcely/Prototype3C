@@ -15,12 +15,16 @@ public class TPControllerV2 : MonoBehaviour {
 	private Vector3 cameraRight;
 	
 	private bool playerIsReprogramming;
+	private bool playerIsAiming;
 	
 	private bool isJumping;
 	private bool jumpIsPressed;
 
 	[HideInInspector]
 	public bool isMoving;
+	
+	[HideInInspector]
+	public bool isAiming;
 	
 	[HideInInspector]
 	public bool canMove;
@@ -41,6 +45,7 @@ public class TPControllerV2 : MonoBehaviour {
 	public float boostCoef;
 	
 	public Transform refCam;
+	public Transform aimCamera;
 	public Transform playerGraphics;
 	
 	public int jumpHeight;
@@ -57,15 +62,15 @@ public class TPControllerV2 : MonoBehaviour {
 		
 		CheckInputs();
 		GetExternVar();
-			
-		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true)
+
+		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true || isAiming)
 		{
 			Vector3 dirTarget = refCam.forward;
 			dirTarget.y = 0;
 			playerGraphics.forward = dirTarget;
 		}
 		
-		if(stickDirection != Vector3.zero && canMove == true)
+		if(stickDirection != Vector3.zero && canMove == true && !isAiming)
 		{
 			//Player movement
 			Vector3 modifiedDirRight = refCam.transform.right;
@@ -105,7 +110,6 @@ public class TPControllerV2 : MonoBehaviour {
 		if((Input.GetButtonDown("A_1")) && (isJumping == false) &&  playerIsReprogramming == false)
 		{
 			Jump();
-
 		}
 		
 		if(Input.GetButton("X_1") && isJumping == false)
@@ -120,6 +124,20 @@ public class TPControllerV2 : MonoBehaviour {
 		XControllerAxis = Input.GetAxis("L_XAxis_1");
 		YControllerAxis = Input.GetAxis("L_YAxis_1");			
 		stickDirection = new Vector3(-XControllerAxis, 0 , YControllerAxis);
+		
+		if(Input.GetAxis("TriggersL_1") >= 0.9)
+		{
+			isAiming = true;
+		}
+		else if(playerIsReprogramming == false)
+		{
+			if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify)
+			{
+				(GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).targetToModify.transform.GetChild(0).light.enabled = false;
+			}
+			
+			isAiming = false;	
+		}
 	}
 		
 	void GetExternVar()
@@ -133,7 +151,6 @@ public class TPControllerV2 : MonoBehaviour {
 		isGrabbing = false;
 		canMove = true;
 	}
-	
 	
 	//Setters
 	public void FreezeMovement()

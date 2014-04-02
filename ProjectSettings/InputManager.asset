@@ -800,10 +800,10 @@ InputManager:
     dead: .300000012
     sensitivity: 1
     snap: 0
-    invert: 0
+    invert: 1
     type: 2
     axis: 4
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: R_YAxis_3
     descriptiveName: 
@@ -1042,7 +1042,7 @@ InputManager:
     snap: 0
     invert: 0
     type: 2
-    axis: 7
+    axis: 9
     joyNum: 1
   - serializedVersion: 3
     m_Name: TriggersR_2
