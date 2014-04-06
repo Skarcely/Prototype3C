@@ -3,15 +3,9 @@
 --- !u!78 &1
 TagManager:
   tags:
-  - GrabZone
-  - Cube
-  - Ground
-<<<<<<< HEAD
+  - 
   - enemy
   - spawnZone
-=======
-  - Camera
->>>>>>> KevinBranchTestCamera
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

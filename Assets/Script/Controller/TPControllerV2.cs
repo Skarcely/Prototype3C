@@ -48,9 +48,12 @@ public class TPControllerV2 : MonoBehaviour {
 	public Transform aimCamera;
 	public Transform playerGraphics;
 	
-	public int jumpHeight;
-	public int jumpSpeed;
+	public float jumpHeight;
+	//public int jumpSpeed;
+	public float risingTime;
 	public float airControl;
+	private float rising;
+	private int peak;
 	
 	// Use this for initialization
 	void Start () {
@@ -62,6 +65,7 @@ public class TPControllerV2 : MonoBehaviour {
 		
 		CheckInputs();
 		GetExternVar();
+		JumpCheck();
 
 		if((GameObject.FindObjectOfType(System.Type.GetType ("CrosshairLock")) as CrosshairLock).isModifying == true || isAiming)
 		{
@@ -85,9 +89,16 @@ public class TPControllerV2 : MonoBehaviour {
 			
 			composedTranslate = Vector3.Normalize(composedTranslate);
 			composedTranslate.y = 0;
-
-			this.transform.Translate(composedTranslate * Time.deltaTime * movementSpeed);
 			
+			if (!isJumping)
+			{
+				this.transform.Translate(composedTranslate * Time.deltaTime * movementSpeed);
+			}
+			else
+			{
+				this.transform.Translate(composedTranslate * Time.deltaTime * movementSpeed*(airControl/100));
+
+			}
 			//Player graphic rotation
 			if (composedTranslate != Vector3.zero)
 			{
@@ -209,11 +220,39 @@ public class TPControllerV2 : MonoBehaviour {
 
 	void Jump()
 	{
+		rising = 0;
+		peak = 0;
 		jumpIsPressed = false;
 		isJumping = true;
 		//Jump force up an forward
 //		this.rigidbody.AddForce(Vector3.up * jumpHeight*Time.deltaTime*1000 + this.transform.forward*jumpSpeed*Time.deltaTime*1000);
-		this.rigidbody.AddForce(new Vector3(0,jumpHeight,0),ForceMode.Impulse);
+		
+	}
+	
+	void JumpCheck()
+	{
+		
+		// jump prototypal
+		if (isJumping)
+		{
+			if (rising < risingTime)
+			{
+				this.transform.position += ((new Vector3(0, jumpHeight/risingTime, 0))/10)*((risingTime+1)/(rising+1));
+				//this.rigidbody.AddForce(new Vector3(0,jumpHeight,0),ForceMode.VelocityChange);
+				rising +=1;
+			}
+			/*else if (peak < 10)
+			{
+				
+				//Debug.Log ("woohoopeak");
+				peak +=1;
+			}*/
+			else 
+			{
+				Debug.Log("falling");
+				
+			}
+		}
 	}
 	
 }
